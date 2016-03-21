@@ -1,5 +1,6 @@
 package com.animenavigator;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -8,14 +9,18 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Created by alexander on 19.03.2016.
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
-
-    public PagerAdapter(FragmentManager fm) {
+    private Context mContext;
+    public PagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        mContext = context;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return PageFragment.newInstance(position);
+        switch(position){
+            case 0 : return new ListFragment();
+            default: return PageFragment.newInstance(position);
+        }
     }
 
     @Override
@@ -25,6 +30,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tab "+position;
+        switch (position){
+            case 0: return mContext.getString(R.string.top_rated_tab_caption);
+            default: return "Tab "+position;
+        }
     }
 }
