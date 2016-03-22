@@ -9,7 +9,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center">
         <ImageView
-            android:id="@+id/list_item_poster"
+            android:id="@+id/item_poster"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"/>
@@ -26,7 +26,7 @@
                 android:src="@drawable/ic_grade_black_18dp"
                 />
             <TextView
-                android:id="@+id/list_item_rating"
+                android:id="@+id/item_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -39,7 +39,7 @@
         android:layout_margin="8dp"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/list_item_title"
+            android:id="@+id/item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Medium"
@@ -47,7 +47,7 @@
             android:ellipsize="end"
             android:gravity="start"/>
         <TextView
-            android:id="@+id/list_item_alternatative_titles"
+            android:id="@+id/item_titles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
@@ -56,7 +56,7 @@
             android:ellipsize="end"
             android:gravity="start"/>
         <TextView
-            android:id="@+id/list_item_creators"
+            android:id="@+id/item_creators"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
@@ -65,7 +65,7 @@
             android:ellipsize="end"
             android:gravity="start"/>
         <TextView
-            android:id="@+id/list_item_genres"
+            android:id="@+id/item_genres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
@@ -74,7 +74,7 @@
             android:ellipsize="end"
             android:gravity="start"/>
         <TextView
-            android:id="@+id/list_item_themes"
+            android:id="@+id/item_themes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"

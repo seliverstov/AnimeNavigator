@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * Created by a.g.seliverstov on 21.03.2016.
  */
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private List<Anime> mAnimeList;
     private Context mContext;
 
-    public ListAdapter(List<Anime> animeList, Context context){
+    public GridAdapter(List<Anime> animeList, Context context){
         this.mContext = context;
         this.mAnimeList = animeList;
     }
@@ -30,7 +30,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.list_item_layout, parent, false);
+        View view = inflater.inflate(R.layout.grid_item_layout, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
 
@@ -65,9 +65,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
-            mTitle = (TextView)itemView.findViewById(R.id.list_item_title);
-            mRating = (TextView)itemView.findViewById(R.id.list_item_rating);
-            mPoster = (ImageView)itemView.findViewById(R.id.list_item_poster);
+            mTitle = (TextView)itemView.findViewById(R.id.item_title);
+            mRating = (TextView)itemView.findViewById(R.id.item_rating);
+            mPoster = (ImageView)itemView.findViewById(R.id.item_poster);
         }
     }
 }

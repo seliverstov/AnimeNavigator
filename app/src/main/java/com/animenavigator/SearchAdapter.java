@@ -45,7 +45,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         holder.mRating.setText(anime.rating);
 
-        holder.mAlternativeTitles.setText(mContext.getString(R.string.alternative_titles, Anime.printList(anime.alternativeTitles)));
+        holder.mTitles.setText(mContext.getString(R.string.alternative_titles, Anime.printList(anime.alternativeTitles)));
 
         holder.mGenres.setText(mContext.getString(R.string.genres, Anime.printList(anime.genres)));
 
@@ -73,7 +73,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public TextView mTitle;
         public ImageView mPoster;
         public TextView mRating;
-        public TextView mAlternativeTitles;
+        public TextView mTitles;
         public TextView mGenres;
         public TextView mThemes;
         public TextView mCreators;
@@ -81,13 +81,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
-            mTitle = (TextView)itemView.findViewById(R.id.list_item_title);
-            mPoster = (ImageView)itemView.findViewById(R.id.list_item_poster);
-            mRating = (TextView)itemView.findViewById(R.id.list_item_rating);
-            mAlternativeTitles = (TextView)itemView.findViewById(R.id.list_item_alternatative_titles);
-            mGenres = (TextView)itemView.findViewById(R.id.list_item_genres);
-            mThemes = (TextView)itemView.findViewById(R.id.list_item_themes);
-            mCreators = (TextView)itemView.findViewById(R.id.list_item_creators);
+            mTitle = (TextView)itemView.findViewById(R.id.item_title);
+            mPoster = (ImageView)itemView.findViewById(R.id.item_poster);
+            mRating = (TextView)itemView.findViewById(R.id.item_rating);
+            mTitles = (TextView)itemView.findViewById(R.id.item_titles);
+            mGenres = (TextView)itemView.findViewById(R.id.item_genres);
+            mThemes = (TextView)itemView.findViewById(R.id.item_themes);
+            mCreators = (TextView)itemView.findViewById(R.id.item_creators);
         }
     }
 }

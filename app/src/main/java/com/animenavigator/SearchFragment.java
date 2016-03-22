@@ -23,7 +23,7 @@ import static android.R.layout.simple_dropdown_item_1line;
  * Created by a.g.seliverstov on 22.03.2016.
  */
 public class SearchFragment extends Fragment{
-    private AppCompatMultiAutoCompleteTextView searchBox;
+    private AppCompatMultiAutoCompleteTextView mSearchView;
 
     @Nullable
     @Override
@@ -37,15 +37,15 @@ public class SearchFragment extends Fragment{
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         recyclerView.addItemDecoration(itemDecoration);
 
-        searchBox = (AppCompatMultiAutoCompleteTextView) view.findViewById(R.id.searchbox);
-        searchBox.setTokenizer(new AppCompatMultiAutoCompleteTextView.CommaTokenizer());
-        searchBox.setThreshold(1);
-        searchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mSearchView = (AppCompatMultiAutoCompleteTextView) view.findViewById(R.id.searchview);
+        mSearchView.setTokenizer(new AppCompatMultiAutoCompleteTextView.CommaTokenizer());
+        mSearchView.setThreshold(1);
+        mSearchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (v.getId()==R.id.searchbox && !hasFocus){
-                    InputMethodManager imm = (InputMethodManager)SearchFragment.this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+                if (v.getId() == R.id.searchview && !hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) SearchFragment.this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         });
@@ -57,13 +57,13 @@ public class SearchFragment extends Fragment{
         for(String s:Anime.listThemes()){
             searchAdapter.add(s);
         }
-        searchBox.setAdapter(searchAdapter);
+        mSearchView.setAdapter(searchAdapter);
 
         ImageButton btnClear = (ImageButton)view.findViewById(R.id.clear_btn);
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchBox.setText("");
+                mSearchView.setText("");
             }
         });
 
@@ -71,11 +71,11 @@ public class SearchFragment extends Fragment{
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchBox.clearFocus();
-                Toast.makeText(SearchFragment.this.getContext(), searchBox.getText(), Toast.LENGTH_SHORT).show();
+                mSearchView.clearFocus();
+                Toast.makeText(SearchFragment.this.getContext(), mSearchView.getText(), Toast.LENGTH_SHORT).show();
             }
         });
-        searchBox.requestFocus();
+        
         return view;
     }
 }

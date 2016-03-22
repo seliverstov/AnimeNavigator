@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/list_item_poster"
+                android:id="@+id/item_poster"
                 android:layout_width="@dimen/poster_small_width"
                 android:layout_height="@dimen/poster_small_height"
                 android:scaleType="centerCrop"/>
@@ -25,7 +25,7 @@
                 android:layout_margin="8dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/list_item_title"
+                    android:id="@+id/item_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -46,7 +46,7 @@
                         android:src="@drawable/ic_grade_black_18dp"
                         />
                     <TextView
-                        android:id="@+id/list_item_rating"
+                        android:id="@+id/item_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />

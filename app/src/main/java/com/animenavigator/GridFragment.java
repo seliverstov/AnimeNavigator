@@ -14,14 +14,14 @@ import com.animenavigator.model.Anime;
 /**
  * Created by a.g.seliverstov on 21.03.2016.
  */
-public class ListFragment extends Fragment {
+public class GridFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.list_fragment,container, false);
+        View view = inflater.inflate(R.layout.grid_fragment,container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.grid_view_column_count)));
-        ListAdapter adapter = new ListAdapter(Anime.createAnimeList(),getContext());
+        GridAdapter adapter = new GridAdapter(Anime.createAnimeList(),getContext());
         recyclerView.setAdapter(adapter);
         return view;
     }
