@@ -2,5 +2,12 @@
     <string name="app_name">Anime Navigator</string>
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
-    <string name="top_rated_tab_caption">Top Rated</string>
+    <string name="tab1">Top Rated</string>
+    <string name="tab2">Search</string>
+    <string name="tab3">New</string>
+    <string name="search_hint">Search by Title, Creator, Theme or Genre</string>
+    <string name="themes">Themes: %s</string>
+    <string name="genres">Genres: %s</string>
+    <string name="alternative_titles">Alternative titles: %s</string>
+    <string name="creators">Creators: %s</string>
 </resources>

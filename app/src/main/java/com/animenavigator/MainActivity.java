@@ -48,12 +48,16 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),this);
 
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
-        if (viewPager!=null)
+        if (viewPager!=null) {
             viewPager.setAdapter(adapter);
+            viewPager.setCurrentItem(1);
+        }
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         if (tabLayout!=null)
             tabLayout.setupWithViewPager(viewPager);
+
+
     }
 
     @Override
