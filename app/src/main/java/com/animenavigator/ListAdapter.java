@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.animenavigator.model.Anime;
 import com.squareup.picasso.Picasso;
@@ -37,9 +38,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Anime anime = mAnimeList.get(position);
+        final Anime anime = mAnimeList.get(position);
         holder.mTitle.setText(anime.title);
+        holder.mRating.setText(anime.rating);
         Picasso.with(mContext).load(anime.posterUrl).into(holder.mPoster);
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, anime._id+": "+anime.title, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -48,12 +57,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public View view;
         public TextView mTitle;
         public ImageView mPoster;
+        public TextView mRating;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             mTitle = (TextView)itemView.findViewById(R.id.list_item_title);
+            mRating = (TextView)itemView.findViewById(R.id.list_item_rating);
             mPoster = (ImageView)itemView.findViewById(R.id.list_item_poster);
         }
     }
