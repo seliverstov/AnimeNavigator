@@ -75,6 +75,7 @@ public class Anime {
     public List<String> themes;
     public List<String> alternativeTitles;
     public List<String> creators;
+    public String plot;
 
     public Anime(){}
 
@@ -91,22 +92,24 @@ public class Anime {
         rating = String.format("%2.1f",Math.random()*10);
 
         genres = new ArrayList<>();
-        int n = (int)(Math.random()*GENRES.length);
+        int n = (int)(Math.random()*5)+1;
         for(int i=0; i<n; i++){
             genres.add(GENRES[(int)(Math.random()*(GENRES.length-1))]);
         }
 
         themes = new ArrayList<>();
-        n = (int)(Math.random()*THEMES.length);
+        n = (int)(Math.random()*5)+1;
         for(int i=0; i<n; i++){
             themes.add(THEMES[(int)(Math.random()*(THEMES.length-1))]);
         }
 
         creators = new ArrayList<>();
-        n = (int)(Math.random()*CREATORS.length);
+        n = (int)(Math.random()*5)+1;
         for(int i=0; i<n; i++){
             creators.add(CREATORS[(int)(Math.random()*(CREATORS.length-1))]);
         }
+
+        plot = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
     }
 
     public static List<Anime> createAnimeList(){

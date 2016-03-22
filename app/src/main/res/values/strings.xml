@@ -6,8 +6,15 @@
     <string name="tab2">Search</string>
     <string name="tab3">New</string>
     <string name="search_hint">Search by Title, Creator, Theme or Genre</string>
-    <string name="themes">Themes: %s</string>
-    <string name="genres">Genres: %s</string>
-    <string name="alternative_titles">Alternative titles: %s</string>
-    <string name="creators">Creators: %s</string>
+    <string name="rating_tmp">Rating: %s</string>
+    <string name="themes_tmp">Themes: %s</string>
+    <string name="genres_tmp">Genres: %s</string>
+    <string name="titles_tmp">Titles: %s</string>
+    <string name="creators_tmp">Creators: %s</string>
+    <string name="themes">Themes:&#160;</string>
+    <string name="genres">Genres:&#160;</string>
+    <string name="titles">Titles:&#160;</string>
+    <string name="creators">Creators:&#160;</string>
+    <string name="plot">Plot summary</string>
+    <string name="rating">Rating:&#160;</string>
 </resources>

@@ -20,6 +20,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         switch(position){
             case 0 : return new GridFragment();
             case 1 : return new SearchFragment();
+            case 2 : return new ListFragment();
             default: return PageFragment.newInstance(position);
         }
     }

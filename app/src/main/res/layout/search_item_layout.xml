@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:text="@string/alternative_titles"
+            android:text="@string/titles_tmp"
             android:maxLines="1"
             android:ellipsize="end"
             android:gravity="start"/>
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:text="@string/creators"
+            android:text="@string/creators_tmp"
             android:maxLines="1"
             android:ellipsize="end"
             android:gravity="start"/>
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:text="@string/genres"
+            android:text="@string/genres_tmp"
             android:maxLines="1"
             android:ellipsize="end"
             android:gravity="start"/>
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:text="@string/themes"
+            android:text="@string/themes_tmp"
             android:maxLines="1"
             android:ellipsize="end"
             android:gravity="start"/>
