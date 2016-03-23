@@ -1,6 +1,8 @@
 package com.animenavigator;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +58,9 @@ public class SearchAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, anime._id+": "+anime.title, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SearchAdapter.this.mContext,DetailsActivity.class);
+                intent.setData(Uri.parse("http://animenavigator.com/" + anime._id));
+                mContext.startActivity(intent);
             }
         });
     }

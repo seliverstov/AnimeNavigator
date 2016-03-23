@@ -17,4 +17,7 @@
     <string name="creators">Creators:&#160;</string>
     <string name="plot">Plot summary</string>
     <string name="rating">Rating:&#160;</string>
+    <string name="summary">Summary</string>
+    <string name="related">Related</string>
+    <string name="extra">Extra</string>
 </resources>
