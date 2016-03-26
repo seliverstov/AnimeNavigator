@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
         if (viewPager!=null) {
             viewPager.setAdapter(adapter);
-            viewPager.setCurrentItem(1);
+
         }
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
