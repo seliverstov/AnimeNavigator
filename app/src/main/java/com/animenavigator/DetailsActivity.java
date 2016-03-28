@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.animenavigator.model.Anime;
@@ -60,6 +61,8 @@ public class DetailsActivity extends AppCompatActivity {
             collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         }
 
+        final LinearLayout header = (LinearLayout)findViewById(R.id.header);
+
         DetailsPagerAdapter adapter = new DetailsPagerAdapter(getSupportFragmentManager(),this);
 
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
@@ -91,10 +94,13 @@ public class DetailsActivity extends AppCompatActivity {
                             }
                         }
                         if (swatch!=null) {
-                            if (collapsingToolbarLayout!=null) {
+                            if (header!=null){
+                                header.setBackgroundColor(swatch.getRgb());
+                            }
+                            /*if (collapsingToolbarLayout!=null) {
                                 collapsingToolbarLayout.setBackgroundColor(swatch.getRgb());
                                 collapsingToolbarLayout.setContentScrimColor(swatch.getRgb());
-                            }
+                            }*/
                             if (tabLayout!=null)
                                 tabLayout.setBackgroundColor(swatch.getRgb());
                         }
