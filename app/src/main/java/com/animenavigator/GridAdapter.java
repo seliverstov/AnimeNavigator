@@ -46,9 +46,9 @@ public class GridAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GridAdapter.this.mContext,DetailsActivity.class);
-                intent.setData(Uri.parse("http://animenavigator.com/"+anime._id));
-                mContext.startActivity(intent);
+                if (mContext instanceof ItemSelectedCallback) {
+                    ((ItemSelectedCallback) mContext).onItemSelected(anime._id);
+                }
             }
         });
     }

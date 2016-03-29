@@ -4,12 +4,26 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:fitsSystemWindows="true">
-    <fragment
-        android:id="@+id/main_fragment"
+
+    <LinearLayout
+        android:id="@+id/two_pane_layout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.animenavigator.MainFragment"
-        />
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/main_fragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            class="com.animenavigator.MainFragment"
+            />
+        <FrameLayout
+            android:id="@+id/details_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"

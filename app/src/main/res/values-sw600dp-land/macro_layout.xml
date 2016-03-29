@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="grid_view_column_count">2</integer>
+    <dimen name="land_margin">0dp</dimen>
+    <item name="activity_main" type="layout">@layout/activity_main_twopane</item>
+</resources>

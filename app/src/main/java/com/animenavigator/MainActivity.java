@@ -1,5 +1,7 @@
 package com.animenavigator;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemSelectedCallback{
+    private static final String DETAILS_FRAGMENT_TAG = "DETAILS_FRAGMENT_TAG";
     private DrawerLayout mDrawerLayout;
+    private boolean mTwoPane;
 
 
     @Override
@@ -22,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null){
@@ -45,18 +49,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),this);
-
-        ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
-        if (viewPager!=null) {
-            viewPager.setAdapter(adapter);
-
+        if (findViewById(R.id.two_pane_layout)!=null){
+            mTwoPane = true;
+            if (savedInstanceState==null || getSupportFragmentManager().findFragmentByTag(DETAILS_FRAGMENT_TAG)==null){
+                getSupportFragmentManager().beginTransaction().replace(R.id.details_container,new DetailsFragment(),DETAILS_FRAGMENT_TAG).commit();
+            }
+        }else{
+            mTwoPane = false;
         }
-
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
-        if (tabLayout!=null)
-            tabLayout.setupWithViewPager(viewPager);
-
 
     }
 
@@ -76,5 +76,20 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    public void onItemSelected(int id) {
+        if (mTwoPane){
+            Bundle args = new Bundle();
+            args.putInt("_ID",id);
+            DetailsFragment detailsFragment = new DetailsFragment();
+            detailsFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.details_container,detailsFragment,DETAILS_FRAGMENT_TAG).commit();
+        }else {
+            Intent intent = new Intent(this, DetailsActivity.class);
+            intent.setData(Uri.parse("http://animenavigator.com/" + id));
+            startActivity(intent);
+        }
     }
 }

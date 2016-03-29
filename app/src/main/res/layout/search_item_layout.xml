@@ -10,8 +10,8 @@
         android:layout_gravity="center">
         <ImageView
             android:id="@+id/item_poster"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/poster_small_width"
+            android:layout_height="@dimen/poster_small_height"
             android:scaleType="centerCrop"/>
         <LinearLayout
             android:layout_width="wrap_content"
