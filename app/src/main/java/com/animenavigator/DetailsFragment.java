@@ -124,7 +124,7 @@ public class DetailsFragment extends Fragment {
             }
         };
 
-        Picasso.with(getActivity()).load(anime.posterUrl).into(target);
+        ImageLoader.loadImageToView(anime.posterUrl, getActivity(), target);
         return view;
     }
 }

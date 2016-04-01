@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.animenavigator.model.Anime;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class ListAdapter extends RecyclerView.Adapter<AnimeViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(AnimeViewHolder holder, int position) {
+    public void onBindViewHolder(final AnimeViewHolder holder, int position) {
         final Anime anime = mAnimeList.get(position);
 
         holder.mTitle.setText(anime.title);
@@ -54,7 +55,7 @@ public class ListAdapter extends RecyclerView.Adapter<AnimeViewHolder>{
 
         holder.mPlot.setText(anime.plot);
 
-        Picasso.with(mContext).load(anime.posterUrl).into(holder.mPoster);
+        ImageLoader.loadImageToView(anime.posterUrl, mContext, holder.mPoster);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,15 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.animenavigator.model.Anime;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Created by a.g.seliverstov on 21.03.2016.
@@ -37,11 +43,12 @@ public class GridAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(AnimeViewHolder holder, int position) {
+    public void onBindViewHolder(final AnimeViewHolder holder, int position) {
         final Anime anime = mAnimeList.get(position);
         holder.mTitle.setText(anime.title);
         holder.mRating.setText(anime.rating);
-        Picasso.with(mContext).load(anime.posterUrl).into(holder.mPoster);
+
+        ImageLoader.loadImageToView(anime.posterUrl, mContext, holder.mPoster);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
