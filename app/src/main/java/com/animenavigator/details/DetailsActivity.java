@@ -19,9 +19,8 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         if (savedInstanceState==null) {
-            int id = (int) ContentUris.parseId(getIntent().getData());
             Bundle args = new Bundle();
-            args.putInt("_ID", id);
+            args.putParcelable(DetailsFragment.MANGA_URI_KEY,getIntent().getData());
             DetailsFragment detailsFragment = new DetailsFragment();
             detailsFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction().replace(R.id.details_container, detailsFragment).commit();

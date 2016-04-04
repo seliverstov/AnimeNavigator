@@ -1,12 +1,18 @@
 package com.animenavigator.details;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +27,7 @@ import android.widget.TextView;
 
 import com.animenavigator.common.ImageLoader;
 import com.animenavigator.R;
+import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -29,6 +36,10 @@ import com.squareup.picasso.Target;
  * Created by a.g.seliverstov on 29.03.2016.
  */
 public class DetailsFragment extends Fragment {
+    public static final String MANGA_URI_KEY = "MANGA_URI_KEY";
+    private int MANGA_CURSOR_LOADER_ID = 4;
+    private View mView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,11 +49,11 @@ public class DetailsFragment extends Fragment {
             return inflater.inflate(R.layout.no_details,container,false);
         }
 
-        final View view = inflater.inflate(R.layout.details_fragment, container, false);
+        mView = inflater.inflate(R.layout.details_fragment, container, false);
 
         if (getActivity() instanceof DetailsActivity){
             AppCompatActivity activity = (AppCompatActivity)getActivity();
-            Toolbar toolbar = (Toolbar)view.findViewById(R.id.details_toolbar);
+            Toolbar toolbar = (Toolbar) mView.findViewById(R.id.details_toolbar);
             activity.setSupportActionBar(toolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar!=null){
@@ -50,83 +61,120 @@ public class DetailsFragment extends Fragment {
             }
         }
 
-        final Anime anime = Anime.find(args.getInt("_ID"));
+        return mView;
+    }
 
-        TextView title = (TextView)view.findViewById(R.id.title);
-        TextView rating = (TextView)view.findViewById(R.id.rating);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(MANGA_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+    }
 
-        if (title!=null)
-            title.setText(anime.title);
-        if (rating!=null)
-            rating.setText(anime.rating);
+    class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
+        private Context mContext;
 
-
-        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)view.findViewById(R.id.collapsing_toolbar);
-
-        if (collapsingToolbarLayout!=null){
-            collapsingToolbarLayout.setTitle(anime.title);
-            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        public CursorLoaderCallback(Context context){
+            mContext = context;
         }
 
-        final LinearLayout header = (LinearLayout)view.findViewById(R.id.header);
-
-        DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(),getActivity());
-
-        ViewPager viewPager = (ViewPager)view.findViewById(R.id.details_viewpager);
-        if (viewPager!=null) {
-            viewPager.setAdapter(adapter);
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
+            if (uri!=null) {
+                return new CursorLoader(
+                        mContext,
+                        uri,
+                        null,
+                        null,
+                        null,
+                        null);
+            }else{
+                return null;
+            }
         }
 
-        final TabLayout tabLayout = (TabLayout)view.findViewById(R.id.details_tablayout);
-        if (tabLayout!=null)
-            tabLayout.setupWithViewPager(viewPager);
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            if (data.moveToFirst()) {
+                final Anime anime = Anime.fromCursor(data);
 
-        final ImageView poster = (ImageView)view.findViewById(R.id.poster);
+                TextView title = (TextView) mView.findViewById(R.id.title);
+                TextView rating = (TextView) mView.findViewById(R.id.rating);
 
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                if (title != null)
+                    title.setText(anime.title);
+                if (rating != null)
+                    rating.setText(anime.rating);
+
+
+                final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) mView.findViewById(R.id.collapsing_toolbar);
+
+                if (collapsingToolbarLayout != null) {
+                    collapsingToolbarLayout.setTitle(anime.title);
+                    collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+                }
+
+                final LinearLayout header = (LinearLayout) mView.findViewById(R.id.header);
+
+                DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(), getActivity());
+
+                ViewPager viewPager = (ViewPager) mView.findViewById(R.id.details_viewpager);
+                if (viewPager != null) {
+                    viewPager.setAdapter(adapter);
+                }
+
+                final TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.details_tablayout);
+                if (tabLayout != null)
+                    tabLayout.setupWithViewPager(viewPager);
+
+                final ImageView poster = (ImageView) mView.findViewById(R.id.poster);
+
+                Target target = new Target() {
                     @Override
-                    public void onGenerated(Palette palette) {
-                        if (poster!=null)
-                            poster.setImageBitmap(bitmap);
-                        Palette.Swatch swatch = palette.getVibrantSwatch();
-                        if (swatch==null) {
-                            for (Palette.Swatch s : palette.getSwatches()) {
-                                if (s != null) {
-                                    swatch = s;
-                                    break;
+                    public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(Palette palette) {
+                                if (poster != null)
+                                    poster.setImageBitmap(bitmap);
+                                Palette.Swatch swatch = palette.getVibrantSwatch();
+                                if (swatch == null) {
+                                    for (Palette.Swatch s : palette.getSwatches()) {
+                                        if (s != null) {
+                                            swatch = s;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (swatch != null) {
+                                    if (header != null) {
+                                        header.setBackgroundColor(swatch.getRgb());
+                                    }
+                                    if (tabLayout != null)
+                                        tabLayout.setBackgroundColor(swatch.getRgb());
                                 }
                             }
-                        }
-                        if (swatch!=null) {
-                            if (header!=null){
-                                header.setBackgroundColor(swatch.getRgb());
-                            }
-                            /*if (collapsingToolbarLayout!=null) {
-                                collapsingToolbarLayout.setBackgroundColor(swatch.getRgb());
-                                collapsingToolbarLayout.setContentScrimColor(swatch.getRgb());
-                            }*/
-                            if (tabLayout!=null)
-                                tabLayout.setBackgroundColor(swatch.getRgb());
-                        }
+                        });
                     }
-                });
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                };
+
+                ImageLoader.loadImageToView(anime.posterUrl, getActivity(), target);
             }
+        }
 
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
 
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-
-        ImageLoader.loadImageToView(anime.posterUrl, getActivity(), target);
-        return view;
+        }
     }
 }

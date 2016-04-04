@@ -1,5 +1,6 @@
 package com.animenavigator.main;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.animenavigator.db.Contract;
 import com.animenavigator.details.DetailsActivity;
 import com.animenavigator.details.DetailsFragment;
 import com.animenavigator.common.ItemSelectedCallback;
@@ -85,13 +87,13 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
     public void onItemSelected(int id) {
         if (mTwoPane){
             Bundle args = new Bundle();
-            args.putInt("_ID",id);
+            args.putParcelable(DetailsFragment.MANGA_URI_KEY, ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
             DetailsFragment detailsFragment = new DetailsFragment();
             detailsFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction().replace(R.id.details_container,detailsFragment,DETAILS_FRAGMENT_TAG).commit();
         }else {
             Intent intent = new Intent(this, DetailsActivity.class);
-            intent.setData(Uri.parse("http://animenavigator.com/" + id));
+            intent.setData(ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
             startActivity(intent);
         }
     }
