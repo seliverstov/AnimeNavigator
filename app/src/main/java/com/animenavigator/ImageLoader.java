@@ -1,9 +1,12 @@
 package com.animenavigator;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -26,14 +29,39 @@ public class ImageLoader {
     }
 
     private static String processUrl(String url){
-        return (BYPASS_CLOUDFLARE) ? CloudFlare.bypass(url) : url;
+        return (BYPASS_CLOUDFLARE)?CloudFlare.bypass(url):url;
     }
 
-    public static void loadImageToView(String url, Context context, ImageView imageView){
-        initPicasso(context).load(processUrl(url)).into(imageView);
+    public static void loadImageToView(final String url, final Context context, final ImageView imageView){
+        initPicasso(context).load(url).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError() {
+                initPicasso(context).load(processUrl(url)).into(imageView);
+            }
+        });
     }
 
-    public static void loadImageToView(String url, Context context, Target target){
-        initPicasso(context).load(processUrl(url)).into(target);
+    public static void loadImageToView(final String url, final Context context, final Target target){
+        initPicasso(context).load(url).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                target.onBitmapLoaded(bitmap,from);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                initPicasso(context).load(processUrl(url)).into(target);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                target.onPrepareLoad(placeHolderDrawable);
+            }
+        });
     }
 }
