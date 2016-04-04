@@ -1,5 +1,6 @@
 package com.animenavigator.details;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -32,12 +33,16 @@ import com.animenavigator.model.Anime;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by a.g.seliverstov on 29.03.2016.
  */
 public class DetailsFragment extends Fragment {
     public static final String MANGA_URI_KEY = "MANGA_URI_KEY";
-    private int MANGA_CURSOR_LOADER_ID = 4;
+    private int MANGA_LOADER_ID = 40;
+    private int GENRES_LOADER_ID = 41;
+    private int THEMES_LOADER_ID = 42;
     private View mView;
 
     @Nullable
@@ -67,13 +72,15 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(MANGA_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        getLoaderManager().initLoader(MANGA_LOADER_ID, null, new MangaLoaderCallback(getActivity()));
+        getLoaderManager().initLoader(GENRES_LOADER_ID, null, new GenresLoaderCallback(getActivity()));
+        getLoaderManager().initLoader(THEMES_LOADER_ID, null, new ThemesLoaderCallback(getActivity()));
     }
 
-    class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
+    class MangaLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
         private Context mContext;
 
-        public CursorLoaderCallback(Context context){
+        public MangaLoaderCallback(Context context){
             mContext = context;
         }
 
@@ -104,7 +111,7 @@ public class DetailsFragment extends Fragment {
                 if (title != null)
                     title.setText(anime.title);
                 if (rating != null)
-                    rating.setText(anime.rating);
+                    rating.setText(new DecimalFormat("#.#").format(anime.rating));
 
 
                 final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) mView.findViewById(R.id.collapsing_toolbar);
@@ -170,6 +177,86 @@ public class DetailsFragment extends Fragment {
 
                 ImageLoader.loadImageToView(anime.posterUrl, getActivity(), target);
             }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+
+        }
+    }
+
+    class GenresLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
+        private Context mContext;
+
+        public GenresLoaderCallback(Context context){
+            mContext = context;
+        }
+
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
+            if (uri!=null) {
+                return new CursorLoader(
+                        mContext,
+                        Contract.GenreEntry.buildGenreForManga(ContentUris.parseId(uri)),
+                        null,
+                        null,
+                        null,
+                        null);
+            }else{
+                return null;
+            }
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            TextView textView = (TextView) mView.findViewById(R.id.genres);
+            String text = "";
+            for(String s:Anime.genresFromCursor(data)){
+                text+=s+", ";
+            }
+            text = text.endsWith(", ")?text.substring(0, text.length()-2):text;
+            textView.setText(mContext.getString(R.string.genres_tmp, text));
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+
+        }
+    }
+
+    class ThemesLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
+        private Context mContext;
+
+        public ThemesLoaderCallback(Context context){
+            mContext = context;
+        }
+
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
+            if (uri!=null) {
+                return new CursorLoader(
+                        mContext,
+                        Contract.ThemeEntry.buildThemesForManga(ContentUris.parseId(uri)),
+                        null,
+                        null,
+                        null,
+                        null);
+            }else{
+                return null;
+            }
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            TextView textView = (TextView) mView.findViewById(R.id.themes);
+            String text = "";
+            for(String s:Anime.themesFromCursor(data)){
+                text+=s+", ";
+            }
+            text = text.endsWith(", ")?text.substring(0, text.length()-2):text;
+            textView.setText(mContext.getString(R.string.themes_tmp, text));
         }
 
         @Override

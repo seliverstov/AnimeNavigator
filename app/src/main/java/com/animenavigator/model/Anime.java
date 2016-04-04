@@ -74,7 +74,7 @@ public class Anime {
     public Integer _id;
     public String title;
     public String posterUrl;
-    public String rating;
+    public float rating;
     public List<String> genres;
     public List<String> themes;
     public List<String> alternativeTitles;
@@ -100,12 +100,28 @@ public class Anime {
         return result.replaceAll("Genre: ","").replaceAll("Theme: ", "");
     }
 
+    public static List<String> genresFromCursor(Cursor c){
+        List<String> result = new ArrayList<>();
+        while (c.moveToNext()){
+            result.add(c.getString(c.getColumnIndex(GenreEntry.NAME_COLUMN)));
+        }
+        return result;
+    }
+
+    public static List<String> themesFromCursor(Cursor c){
+        List<String> result = new ArrayList<>();
+        while (c.moveToNext()){
+            result.add(c.getString(c.getColumnIndex(ThemeEntry.NAME_COLUMN)));
+        }
+        return result;
+    }
+
     public static Anime fromCursor(Cursor c){
         Anime a = new Anime();
         a._id = c.getInt(c.getColumnIndex(MangaEntry._ID));
         a.title = c.getString(c.getColumnIndex(MangaEntry.NAME_COLUMN));
         a.plot = c.getString(c.getColumnIndex(MangaEntry.PLOT_COLUMN));
-        a.rating = c.getString(c.getColumnIndex(MangaEntry.WEIGHTED_SCORE_COLUMN));
+        a.rating = c.getFloat(c.getColumnIndex(MangaEntry.WEIGHTED_SCORE_COLUMN));
         a.posterUrl = c.getString(c.getColumnIndex(MangaEntry.PICTURE_COLUMN));
 
         a.alternativeTitles = new ArrayList<>();

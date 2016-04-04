@@ -12,6 +12,8 @@ import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
 import com.animenavigator.model.Anime;
 
+import java.text.DecimalFormat;
+
 import skyfish.CursorRecyclerViewAdapter;
 
 
@@ -40,7 +42,7 @@ public class GridAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
     public void onBindViewHolder(final AnimeViewHolder holder, Cursor cursor) {
         final Anime anime = Anime.fromCursor(cursor);
         holder.mTitle.setText(anime.title);
-        holder.mRating.setText(anime.rating);
+        holder.mRating.setText(new DecimalFormat("#.#").format(anime.rating));
 
         ImageLoader.loadImageToView(anime.posterUrl, mContext, holder.mPoster);
 

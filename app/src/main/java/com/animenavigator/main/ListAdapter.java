@@ -12,6 +12,8 @@ import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
 import com.animenavigator.model.Anime;
 
+import java.text.DecimalFormat;
+
 import skyfish.CursorRecyclerViewAdapter;
 
 /**
@@ -41,7 +43,7 @@ public class ListAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
 
         holder.mTitle.setText(anime.title);
 
-        holder.mRating.setText(anime.rating);
+        holder.mRating.setText(new DecimalFormat("#.#").format(anime.rating));
 
         //holder.mTitles.setText(mContext.getString(R.string.titles_tmp, Anime.printList(anime.alternativeTitles)));
 

@@ -49,6 +49,7 @@
                         android:paddingStart="@dimen/activity_horizontal_margin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
                     <RelativeLayout
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingStart="@dimen/activity_horizontal_margin"
@@ -74,7 +75,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </RelativeLayout>
-
+                    <TextView
+                        android:id="@+id/genres"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/themes"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
             </LinearLayout>
