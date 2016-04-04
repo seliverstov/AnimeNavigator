@@ -18,6 +18,11 @@
         <activity android:name=".details.DetailsActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".main.MainActivity"/>
         </activity>
+
+        <provider
+            android:authorities="com.animenavigator.provider"
+            android:name="com.animenavigator.db.Provider"
+            android:exported="false"/>
     </application>
 
 </manifest>

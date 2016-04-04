@@ -1,9 +1,13 @@
 package com.animenavigator.main;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 
 import com.animenavigator.common.DividerItemDecoration;
 import com.animenavigator.R;
+import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 
 import static android.R.layout.simple_dropdown_item_1line;
@@ -25,7 +30,9 @@ import static android.R.layout.simple_dropdown_item_1line;
  * Created by a.g.seliverstov on 22.03.2016.
  */
 public class SearchFragment extends Fragment{
+    private int SEARCH_CURSOR_LOADER_ID = 3;
     private AppCompatMultiAutoCompleteTextView mSearchView;
+    private SearchAdapter mAdapter;
 
     @Nullable
     @Override
@@ -33,8 +40,8 @@ public class SearchFragment extends Fragment{
         View view = inflater.inflate(R.layout.search_fragment,container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        SearchAdapter adapter = new SearchAdapter(Anime.createAnimeList(),getContext());
-        recyclerView.setAdapter(adapter);
+        mAdapter = new SearchAdapter(getContext(), null);
+        recyclerView.setAdapter(mAdapter);
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         recyclerView.addItemDecoration(itemDecoration);
@@ -79,5 +86,40 @@ public class SearchFragment extends Fragment{
         });
         
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(SEARCH_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+    }
+
+    class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
+        private Context mContext;
+
+        public CursorLoaderCallback(Context context){
+            mContext = context;
+        }
+
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            return new CursorLoader(
+                    mContext,
+                    Contract.MangaEntry.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    Contract.MangaEntry.BAYESIAN_SCORE_COLUMN+" desc");
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            mAdapter.swapCursor(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            mAdapter.swapCursor(null);
+        }
     }
 }

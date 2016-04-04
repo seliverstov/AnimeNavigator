@@ -1,5 +1,9 @@
 package com.animenavigator.model;
 
+import android.database.Cursor;
+
+import static com.animenavigator.db.Contract.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -168,5 +172,37 @@ public class Anime {
             if (a._id==id) return a;
         }
         return null;
+    }
+
+    public static Anime fromCursor(Cursor c){
+        Anime a = new Anime();
+        a._id = c.getInt(c.getColumnIndex(MangaEntry._ID));
+        a.title = c.getString(c.getColumnIndex(MangaEntry.NAME_COLUMN));
+        a.plot = c.getString(c.getColumnIndex(MangaEntry.PLOT_COLUMN));
+        a.rating = c.getString(c.getColumnIndex(MangaEntry.WEIGHTED_SCORE_COLUMN));
+        a.posterUrl = c.getString(c.getColumnIndex(MangaEntry.PICTURE_COLUMN));
+
+        a.alternativeTitles = new ArrayList<>();
+        a.alternativeTitles.add(a.title);
+
+        a.genres = new ArrayList<>();
+        int n = (int)(Math.random()*5)+1;
+        for(int i=0; i<n; i++){
+            a.genres.add(GENRES[(int)(Math.random()*(GENRES.length-1))]);
+        }
+
+        a.themes = new ArrayList<>();
+        n = (int)(Math.random()*5)+1;
+        for(int i=0; i<n; i++){
+            a.themes.add(THEMES[(int)(Math.random()*(THEMES.length-1))]);
+        }
+
+        a.creators = new ArrayList<>();
+        n = (int)(Math.random()*5)+1;
+        for(int i=0; i<n; i++){
+            a.creators.add(CREATORS[(int)(Math.random()*(CREATORS.length-1))]);
+        }
+
+        return a;
     }
 }

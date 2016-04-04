@@ -1,7 +1,7 @@
 package com.animenavigator.main;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +12,17 @@ import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
 import com.animenavigator.model.Anime;
 
-import java.util.List;
+import skyfish.CursorRecyclerViewAdapter;
 
 /**
  * Created by a.g.seliverstov on 22.03.2016.
  */
-public class ListAdapter extends RecyclerView.Adapter<AnimeViewHolder>{
-    private List<Anime> mAnimeList;
+public class ListAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
     private Context mContext;
 
-    public ListAdapter(List<Anime> animeList, Context context){
+    public ListAdapter(Context context, Cursor cursor){
+        super(context, cursor);
         this.mContext = context;
-        this.mAnimeList = animeList;
     }
 
     @Override
@@ -37,8 +36,8 @@ public class ListAdapter extends RecyclerView.Adapter<AnimeViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(final AnimeViewHolder holder, int position) {
-        final Anime anime = mAnimeList.get(position);
+    public void onBindViewHolder(final AnimeViewHolder holder, Cursor cursor) {
+        final Anime anime = Anime.fromCursor(cursor);
 
         holder.mTitle.setText(anime.title);
 
@@ -64,10 +63,5 @@ public class ListAdapter extends RecyclerView.Adapter<AnimeViewHolder>{
                 }
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mAnimeList.size();
     }
 }
