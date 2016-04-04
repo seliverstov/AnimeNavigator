@@ -1,4 +1,4 @@
-package com.animenavigator;
+package com.animenavigator.utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;

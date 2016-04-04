@@ -1,4 +1,4 @@
-package com.animenavigator;
+package com.animenavigator.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.animenavigator.common.PagerAdapter;
+import com.animenavigator.R;
 
 /**
  * Created by a.g.seliverstov on 29.03.2016.

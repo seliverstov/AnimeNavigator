@@ -1,29 +1,12 @@
-package com.animenavigator;
+package com.animenavigator.details;
 
 import android.content.ContentUris;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.animenavigator.model.Anime;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import com.animenavigator.R;
 
 /**
  * Created by a.g.seliverstov on 23.03.2016.

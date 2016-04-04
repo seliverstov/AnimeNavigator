@@ -1,11 +1,9 @@
-package com.animenavigator;
+package com.animenavigator.main;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements ItemSelectedCallback{
+import com.animenavigator.details.DetailsActivity;
+import com.animenavigator.details.DetailsFragment;
+import com.animenavigator.common.ItemSelectedCallback;
+import com.animenavigator.R;
+
+public class MainActivity extends AppCompatActivity implements ItemSelectedCallback {
     private static final String DETAILS_FRAGMENT_TAG = "DETAILS_FRAGMENT_TAG";
     private DrawerLayout mDrawerLayout;
     private boolean mTwoPane;

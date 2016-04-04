@@ -1,17 +1,16 @@
-package com.animenavigator;
+package com.animenavigator.main;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.animenavigator.common.AnimeViewHolder;
+import com.animenavigator.common.ImageLoader;
+import com.animenavigator.common.ItemSelectedCallback;
+import com.animenavigator.R;
 import com.animenavigator.model.Anime;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

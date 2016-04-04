@@ -1,4 +1,4 @@
-package com.animenavigator;
+package com.animenavigator.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.animenavigator.common.DividerItemDecoration;
+import com.animenavigator.R;
 import com.animenavigator.model.Anime;
 
 import static android.R.layout.simple_dropdown_item_1line;

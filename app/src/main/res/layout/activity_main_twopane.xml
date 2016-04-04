@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            class="com.animenavigator.MainFragment"
+            class="com.animenavigator.main.MainFragment"
             />
         <FrameLayout
             android:id="@+id/details_container"

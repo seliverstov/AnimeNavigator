@@ -1,4 +1,4 @@
-package com.animenavigator;
+package com.animenavigator.details;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.animenavigator.common.ImageLoader;
+import com.animenavigator.R;
 import com.animenavigator.model.Anime;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;

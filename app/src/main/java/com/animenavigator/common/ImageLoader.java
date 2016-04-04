@@ -1,10 +1,11 @@
-package com.animenavigator;
+package com.animenavigator.common;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.animenavigator.utils.CloudFlare;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttpDownloader;
@@ -29,7 +30,7 @@ public class ImageLoader {
     }
 
     private static String processUrl(String url){
-        return (BYPASS_CLOUDFLARE)?CloudFlare.bypass(url):url;
+        return (BYPASS_CLOUDFLARE)? CloudFlare.bypass(url):url;
     }
 
     public static void loadImageToView(final String url, final Context context, final ImageView imageView){

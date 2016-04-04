@@ -1,9 +1,11 @@
-package com.animenavigator;
+package com.animenavigator.common;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.animenavigator.R;
 
 /**
  * Created by a.g.seliverstov on 22.03.2016.

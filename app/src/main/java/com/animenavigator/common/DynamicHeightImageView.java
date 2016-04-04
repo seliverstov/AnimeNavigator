@@ -1,4 +1,4 @@
-package com.animenavigator;
+package com.animenavigator.common;
 
 /**
  * Created by alexander on 26.03.2016.

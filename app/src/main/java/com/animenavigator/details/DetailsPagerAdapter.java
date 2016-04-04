@@ -1,9 +1,12 @@
-package com.animenavigator;
+package com.animenavigator.details;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.animenavigator.common.PageFragment;
+import com.animenavigator.R;
 
 /**
  * Created by a.g.seliverstov on 23.03.2016.
