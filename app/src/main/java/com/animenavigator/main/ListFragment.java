@@ -56,7 +56,7 @@ public class ListFragment extends Fragment{
                     null,
                     null,
                     null,
-                    Contract.MangaEntry.BAYESIAN_SCORE_COLUMN+" desc");
+                    Contract.MangaEntry._ID+" desc");
         }
 
         @Override
