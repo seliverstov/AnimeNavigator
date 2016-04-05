@@ -47,7 +47,11 @@ public class SearchAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
 
         holder.mRating.setText(new DecimalFormat("#.#").format(anime.rating));
 
-        holder.mTitles.setText(mContext.getString(R.string.titles_tmp, Anime.printList(anime.alternativeTitles)));
+        Cursor titlesCursor  = mContext.getContentResolver().query(Contract.MangaTitleEntry.buildTitlesForManga((long) anime._id), null, null, null, null);
+        if (titlesCursor!=null){
+            holder.mTitles.setText(mContext.getString(R.string.titles_tmp,Anime.titlesFromCursorAsString(titlesCursor)));
+            titlesCursor.close();
+        }
 
         Cursor genresCursor  = mContext.getContentResolver().query(Contract.GenreEntry.buildGenreForManga((long) anime._id), null, null, null, null);
         if (genresCursor!=null){

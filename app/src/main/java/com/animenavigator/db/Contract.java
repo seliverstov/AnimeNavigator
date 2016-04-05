@@ -21,6 +21,8 @@ public class Contract {
 
     public static final String PATH_TASK = "task";
 
+    public static final String PATH_TITLE = "title";
+
     public static final class MangaEntry implements BaseColumns{
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MANGA).build();
         public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MANGA;
@@ -114,6 +116,23 @@ public class Contract {
         public static final String MANGA_ID_COLUMN = "manga_id";
         public static final String TASK_ID_COLUMN = "task_id";
         public static final String PERSON_ID_COLUMN = "person_id";
+    }
+
+    public static final class MangaTitleEntry {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TITLE).build();
+        public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TITLE;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TITLE;
+
+        public static final String TABLE_NAME = "manga_titles";
+
+        public static final String _ID = "_id";
+        public static final String MANGA_ID_COLUMN = "manga_id";
+        public static final String NAME_COLUMN = "title";
+        public static final String LANG_COLUMN = "lang";
+
+        public static Uri buildTitlesForManga(long mangaId) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_MANGA).appendPath(String.valueOf(mangaId)).build();
+        }
     }
 
 }

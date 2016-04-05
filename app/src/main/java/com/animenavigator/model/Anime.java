@@ -6,7 +6,9 @@ import static com.animenavigator.db.Contract.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by a.g.seliverstov on 21.03.2016.
@@ -14,6 +16,7 @@ import java.util.List;
 public class Anime {
 
     public Integer _id;
+    public String type;
     public String title;
     public String posterUrl;
     public float rating;
@@ -81,16 +84,37 @@ public class Anime {
         return result;
     }
 
+    public static String titlesFromCursorAsString(Cursor c){
+        String result = "";
+        while (c.moveToNext()){
+            String s = c.getString(c.getColumnIndex(MangaTitleEntry.NAME_COLUMN));
+            result+= (c.isFirst())?s:", "+s;
+        }
+        return result;
+    }
+
+    public static String creatorsAndTasksFromCursorAsHtml(Cursor c){
+        Map<String,String> tasks = new HashMap<String,String>();
+        while (c.moveToNext()){
+            String persons = tasks.get(c.getString(c.getColumnIndex(TaskEntry.NAME_COLUMN)));
+            persons = (persons==null)?c.getString(c.getColumnIndex(PersonEntry.NAME_COLUMN)):persons+", "+c.getString(c.getColumnIndex(PersonEntry.NAME_COLUMN));
+            tasks.put(c.getString(c.getColumnIndex(TaskEntry.NAME_COLUMN)),persons);
+        }
+        StringBuilder sb = new StringBuilder();
+        for(String t: tasks.keySet()){
+            sb.append("<b>"+t+"</b>: "+tasks.get(t)+"<br/>");
+        }
+        return sb.toString();
+    }
+
     public static Anime fromCursor(Cursor c){
         Anime a = new Anime();
         a._id = c.getInt(c.getColumnIndex(MangaEntry._ID));
+        a.type = c.getString(c.getColumnIndex(MangaEntry.TYPE_COLUMN));
         a.title = c.getString(c.getColumnIndex(MangaEntry.NAME_COLUMN));
         a.plot = c.getString(c.getColumnIndex(MangaEntry.PLOT_COLUMN));
         a.rating = c.getFloat(c.getColumnIndex(MangaEntry.WEIGHTED_SCORE_COLUMN));
         a.posterUrl = c.getString(c.getColumnIndex(MangaEntry.PICTURE_COLUMN));
-
-        a.alternativeTitles = new ArrayList<>();
-        a.alternativeTitles.add(a.title);
         return a;
     }
 }

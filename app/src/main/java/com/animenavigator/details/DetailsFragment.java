@@ -42,16 +42,18 @@ public class DetailsFragment extends Fragment {
     public static final String MANGA_URI_KEY = "MANGA_URI_KEY";
     private int MANGA_CURSOR_LOADER_ID = 4;
     private View mView;
+    private Uri mMangaUri;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
 
-        if (args==null){
+        if (args==null || args.getParcelable(MANGA_URI_KEY)==null){
+
             return inflater.inflate(R.layout.no_details,container,false);
         }
-
+        mMangaUri = getArguments().getParcelable(MANGA_URI_KEY);
         mView = inflater.inflate(R.layout.details_fragment, container, false);
 
         if (getActivity() instanceof DetailsActivity){
@@ -103,13 +105,17 @@ public class DetailsFragment extends Fragment {
 
                 final TextView title = (TextView) mView.findViewById(R.id.title);
                 final TextView rating = (TextView) mView.findViewById(R.id.rating);
+                final TextView type = (TextView) mView.findViewById(R.id.type);
+                final TextView vintage = (TextView) mView.findViewById(R.id.vintage);
 
                 if (title != null)
                     title.setText(anime.title);
                 if (rating != null)
                     rating.setText(new DecimalFormat("#.#").format(anime.rating));
+                if (type != null)
+                    type.setText(anime.type);
 
-                final TextView genres = (TextView)mView.findViewById(R.id.genres);
+                /*final TextView genres = (TextView)mView.findViewById(R.id.genres);
                 if (genres!=null) {
                     Cursor genresCursor = mContext.getContentResolver().query(Contract.GenreEntry.buildGenreForManga((long) anime._id), null, null, null, null);
                     if (genresCursor != null) {
@@ -125,7 +131,7 @@ public class DetailsFragment extends Fragment {
                         themes.setText(mContext.getString(R.string.themes_tmp, Anime.themesFromCursorAsString(themesCursor)));
                         themesCursor.close();
                     }
-                }
+                }*/
                 final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) mView.findViewById(R.id.collapsing_toolbar);
 
                 if (collapsingToolbarLayout != null) {
@@ -135,7 +141,9 @@ public class DetailsFragment extends Fragment {
 
                 final LinearLayout header = (LinearLayout) mView.findViewById(R.id.header);
 
-                DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(), getActivity());
+
+                Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
+                DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(), getActivity(), uri);
 
                 ViewPager viewPager = (ViewPager) mView.findViewById(R.id.details_viewpager);
                 if (viewPager != null) {
@@ -175,12 +183,18 @@ public class DetailsFragment extends Fragment {
                                     if (rating!=null){
                                         rating.setTextColor(swatch.getTitleTextColor());
                                     }
-                                    if (genres!=null){
+                                    if (type!=null){
+                                        type.setTextColor(swatch.getTitleTextColor());
+                                    }
+                                    if (vintage!=null){
+                                        vintage.setTextColor(swatch.getTitleTextColor());
+                                    }
+                                    /*if (genres!=null){
                                         genres.setTextColor(swatch.getTitleTextColor());
                                     }
                                     if (themes!=null){
                                         themes.setTextColor(swatch.getTitleTextColor());
-                                    }
+                                    }*/
                                     if (tabLayout != null) {
                                         tabLayout.setBackgroundColor(swatch.getRgb());
                                         tabLayout.setTabTextColors(swatch.getTitleTextColor(),swatch.getBodyTextColor());

@@ -1,6 +1,7 @@
 package com.animenavigator.details;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,15 +14,22 @@ import com.animenavigator.R;
  */
 public class DetailsPagerAdapter extends FragmentStatePagerAdapter {
     Context mContext;
+    Uri mMangaUri;
 
-    public DetailsPagerAdapter(FragmentManager fm, Context context) {
+    public DetailsPagerAdapter(FragmentManager fm, Context context, Uri mangaUri) {
         super(fm);
         mContext =  context;
+        mMangaUri = mangaUri;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return PageFragment.newInstance(position);
+        switch (position){
+            case 0: return SummaryFragment.newInstance(mMangaUri);
+            case 1: return PageFragment.newInstance(position);
+            case 2: return PageFragment.newInstance(position);
+            default: return null;
+        }
     }
 
     @Override

@@ -11,10 +11,10 @@
     <string name="genres_tmp">Genres: %s</string>
     <string name="titles_tmp">Titles: %s</string>
     <string name="creators_tmp">Creators: %s</string>
-    <string name="themes">Themes:&#160;</string>
-    <string name="genres">Genres:&#160;</string>
-    <string name="titles">Titles:&#160;</string>
-    <string name="creators">Creators:&#160;</string>
+    <string name="themes">Themes</string>
+    <string name="genres">Genres</string>
+    <string name="titles">Titles</string>
+    <string name="creators">Creators</string>
     <string name="plot">Plot summary</string>
     <string name="rating">Rating:&#160;</string>
     <string name="summary">Summary</string>

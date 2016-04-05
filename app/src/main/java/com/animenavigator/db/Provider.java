@@ -34,6 +34,10 @@ public class Provider extends ContentProvider{
     static final int PERSON_FOR_MANGA = 402;
     static final int PERSON_AND_TASK_FOR_MANGA = 403;
 
+    static final int TITLE = 500;
+    static final int TITLE_WITH_ID = 501;
+    static final int TITLE_FOR_MANGA = 502;
+
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CONTENT_AUTHORITY;
@@ -52,6 +56,10 @@ public class Provider extends ContentProvider{
         sUriMatcher.addURI(authority, PATH_PERSON+"/#", PERSON_WITH_ID);
         sUriMatcher.addURI(authority, PATH_PERSON+'/'+PATH_MANGA+"/#", PERSON_FOR_MANGA);
         sUriMatcher.addURI(authority, PATH_PERSON+'/'+PATH_TASK+'/'+PATH_MANGA+"/#", PERSON_AND_TASK_FOR_MANGA);
+
+        sUriMatcher.addURI(authority, PATH_TITLE, TITLE);
+        sUriMatcher.addURI(authority, PATH_TITLE+"/#", TITLE_WITH_ID);
+        sUriMatcher.addURI(authority, PATH_TITLE+'/'+PATH_MANGA+"/#", TITLE_FOR_MANGA);
     }
 
     private static final SQLiteQueryBuilder sGenresForMangaQueryBuilder;
@@ -123,17 +131,19 @@ public class Provider extends ContentProvider{
         SQLiteDatabase db =mDbHelper.getReadableDatabase();
         Cursor retCursor;
         switch (sUriMatcher.match(uri)){
-            case MANGA:
-                retCursor = db.query(MangaEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+            case MANGA: {
+                retCursor = db.query(MangaEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            }
             case MANGA_WITH_ID:{
                 String id = String.valueOf(ContentUris.parseId(uri));
                 retCursor = db.query(MangaEntry.TABLE_NAME,projection,MangaEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
-            case GENRE:
-                retCursor = db.query(GenreEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+            case GENRE: {
+                retCursor = db.query(GenreEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            }
             case GENRE_WITH_ID:{
                 String id = String.valueOf(ContentUris.parseId(uri));
                 retCursor = db.query(GenreEntry.TABLE_NAME,projection,GenreEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
@@ -144,9 +154,10 @@ public class Provider extends ContentProvider{
                 retCursor = sGenresForMangaQueryBuilder.query(db,projection,MangaGenreEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
-            case THEME:
-                retCursor = db.query(ThemeEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+            case THEME: {
+                retCursor = db.query(ThemeEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            }
             case THEME_WITH_ID:{
                 String id = String.valueOf(ContentUris.parseId(uri));
                 retCursor = db.query(ThemeEntry.TABLE_NAME,projection,ThemeEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
@@ -157,9 +168,10 @@ public class Provider extends ContentProvider{
                 retCursor = sThemesForMangaQueryBuilder.query(db,projection,MangaThemeEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
-            case PERSON:
-                retCursor = db.query(PersonEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+            case PERSON: {
+                retCursor = db.query(PersonEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            }
             case PERSON_WITH_ID:{
                 String id = String.valueOf(ContentUris.parseId(uri));
                 retCursor = db.query(PersonEntry.TABLE_NAME,projection,ThemeEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
@@ -168,6 +180,25 @@ public class Provider extends ContentProvider{
             case PERSON_FOR_MANGA:{
                 String id = String.valueOf(ContentUris.parseId(uri));
                 retCursor = sPersonsForMangaQueryBuilder.query(db,new String[]{PersonEntry.TABLE_NAME+"."+PersonEntry._ID,PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN},MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case PERSON_AND_TASK_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = sPersonsAndTasksForMangaQueryBuilder.query(db,new String[]{PersonEntry.TABLE_NAME+"."+PersonEntry._ID,PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN,TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN},MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN);
+                break;
+            }
+            case TITLE: {
+                retCursor = db.query(MangaTitleEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            }
+            case TITLE_WITH_ID:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaTitleEntry.TABLE_NAME,projection,MangaTitleEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case TITLE_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaTitleEntry.TABLE_NAME,projection,MangaTitleEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
             default:
@@ -203,6 +234,14 @@ public class Provider extends ContentProvider{
                 return PersonEntry.CONTENT_ITEM_TYPE;
             case PERSON_FOR_MANGA:
                 return PersonEntry.CONTENT_DIR_TYPE;
+            case PERSON_AND_TASK_FOR_MANGA:
+                return PersonEntry.CONTENT_DIR_TYPE;
+            case TITLE:
+                return MangaTitleEntry.CONTENT_DIR_TYPE;
+            case TITLE_WITH_ID:
+                return MangaTitleEntry.CONTENT_ITEM_TYPE;
+            case TITLE_FOR_MANGA:
+                return MangaTitleEntry.CONTENT_DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }
