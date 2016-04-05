@@ -30,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:maxLines="1"
+                    android:minLines="2"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:gravity="start"/>
                 <LinearLayout
