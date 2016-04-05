@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:layout_gravity="end|center_vertical"
+                    android:layout_gravity="end|top"
                     android:gravity="end">
                     <ImageView
                         android:layout_width="18dp"

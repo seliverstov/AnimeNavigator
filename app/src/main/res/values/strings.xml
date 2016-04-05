@@ -16,10 +16,11 @@
     <string name="titles">Titles</string>
     <string name="creators">Creators</string>
     <string name="plot">Plot summary</string>
-    <string name="rating">Rating:&#160;</string>
+    <string name="rating">Rating</string>
     <string name="summary">Summary</string>
     <string name="related">Related</string>
     <string name="extra">Extra</string>
     <string name="no_details">Select something from list to see details</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consequat augue vitae nunc dapibus convallis. Integer commodo orci sed augue aliquet consequat. Nulla in tristique dui, sit amet posuere lectus. Donec vulputate non ex ac elementum. Pellentesque bibendum nisl velit, nec lobortis velit accumsan id. Morbi rhoncus mattis turpis id dignissim. Sed eget enim semper sem ultrices sagittis at convallis metus. Sed sed purus nisl. Duis semper lorem sit amet sapien molestie scelerisque. Donec et felis sapien. Vivamus vitae dapibus urna. Vivamus sapien dolor, sagittis at pharetra quis, ullamcorper id urna. Vestibulum in tempor libero. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</string>
+    <string name="unknown">unknown</string>
 </resources>

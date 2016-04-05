@@ -91,7 +91,9 @@ public class SummaryFragment extends Fragment{
                 if (titles != null) {
                     Cursor titlesCursor = mContext.getContentResolver().query(Contract.MangaTitleEntry.buildTitlesForManga((long) anime._id), null, null, null, null);
                     if (titlesCursor != null) {
-                        titles.setText(Html.fromHtml(Anime.titlesFromCursorAsString(titlesCursor)));
+                        String s = Anime.titlesFromCursorAsString(titlesCursor);
+                        s = anime.title+", "+s;
+                        titles.setText(s);
                         titlesCursor.close();
                     }
                 }
@@ -100,7 +102,9 @@ public class SummaryFragment extends Fragment{
                 if (genres != null) {
                     Cursor genresCursor = mContext.getContentResolver().query(Contract.GenreEntry.buildGenreForManga((long) anime._id), null, null, null, null);
                     if (genresCursor != null) {
-                        genres.setText(Anime.genresFromCursorAsString(genresCursor));
+                        String s = Anime.genresFromCursorAsString(genresCursor);
+                        s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;
+                        genres.setText(s);
                         genresCursor.close();
                     }
                 }
@@ -109,7 +113,9 @@ public class SummaryFragment extends Fragment{
                 if (themes != null) {
                     Cursor themesCursor = mContext.getContentResolver().query(Contract.ThemeEntry.buildThemesForManga((long) anime._id), null, null, null, null);
                     if (themesCursor != null) {
-                        themes.setText(Anime.themesFromCursorAsString(themesCursor));
+                        String s = Anime.themesFromCursorAsString(themesCursor);
+                        s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;
+                        themes.setText(s);
                         themesCursor.close();
                     }
                 }
@@ -117,7 +123,9 @@ public class SummaryFragment extends Fragment{
                 if (creators != null) {
                     Cursor creatorsCursor = mContext.getContentResolver().query(Contract.PersonEntry.buildPersonsAndTasksForManga((long) anime._id), null, null, null, null);
                     if (creatorsCursor != null) {
-                        creators.setText(Html.fromHtml(Anime.creatorsAndTasksFromCursorAsHtml(creatorsCursor)));
+                        String s = Anime.creatorsAndTasksFromCursorAsHtml(creatorsCursor);
+                        s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;
+                        creators.setText(Html.fromHtml(s));
                         creatorsCursor.close();
                     }
                 }

@@ -111,9 +111,10 @@ public class DetailsFragment extends Fragment {
                 if (title != null)
                     title.setText(anime.title);
                 if (rating != null)
-                    rating.setText(new DecimalFormat("#.#").format(anime.rating));
-                if (type != null)
-                    type.setText(anime.type);
+                    rating.setText(getContext().getString(R.string.rating_tmp, new DecimalFormat("#.#").format(anime.rating)));
+                if (type != null) {
+                    type.setText(Character.toUpperCase(anime.type.charAt(0)) + anime.type.substring(1));
+                }
 
                 /*final TextView genres = (TextView)mView.findViewById(R.id.genres);
                 if (genres!=null) {
@@ -178,7 +179,7 @@ public class DetailsFragment extends Fragment {
                                         header.setBackgroundColor(swatch.getRgb());
                                     }
                                     if (title!=null){
-                                        title.setTextColor(swatch.getTitleTextColor());
+                                        title.setTextColor(swatch.getBodyTextColor());
                                     }
                                     if (rating!=null){
                                         rating.setTextColor(swatch.getTitleTextColor());
