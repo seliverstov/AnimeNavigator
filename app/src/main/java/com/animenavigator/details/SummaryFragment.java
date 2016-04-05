@@ -85,7 +85,7 @@ public class SummaryFragment extends Fragment{
 
 
                 if (plot != null)
-                    plot.setText(anime.plot);
+                    plot.setText((anime.plot==null)?mContext.getString(R.string.unknown):anime.plot);
 
                 final TextView titles = (TextView) mView.findViewById(R.id.titles);
                 if (titles != null) {

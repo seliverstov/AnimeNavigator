@@ -44,29 +44,33 @@ public class ListAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
 
         holder.mTitle.setText(anime.title);
 
-        holder.mRating.setText(new DecimalFormat("#.#").format(anime.rating));
-
-        //holder.mTitles.setText(mContext.getString(R.string.titles_tmp, Anime.printList(anime.alternativeTitles)));
+        holder.mRating.setText(mContext.getString(R.string.rating_tmp, new DecimalFormat("#.#").format(anime.rating)));
 
         Cursor genresCursor  = mContext.getContentResolver().query(Contract.GenreEntry.buildGenreForManga((long) anime._id), null, null, null, null);
         if (genresCursor!=null){
-            holder.mGenres.setText(mContext.getString(R.string.genres_tmp,Anime.genresFromCursorAsString(genresCursor)));
+            String s = Anime.genresFromCursorAsString(genresCursor);
+            s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;
+            holder.mGenres.setText(mContext.getString(R.string.genres_tmp, s));
             genresCursor.close();
         }
 
         Cursor themesCursor  = mContext.getContentResolver().query(Contract.ThemeEntry.buildThemesForManga((long) anime._id), null, null, null, null);
         if (themesCursor!=null){
-            holder.mThemes.setText(mContext.getString(R.string.themes_tmp, Anime.themesFromCursorAsString(themesCursor)));
+            String s = Anime.themesFromCursorAsString(themesCursor);
+            s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;
+            holder.mThemes.setText(mContext.getString(R.string.themes_tmp, s));
             themesCursor.close();
         }
 
         Cursor creatorsCursor  = mContext.getContentResolver().query(Contract.PersonEntry.buildPersonsForManga((long) anime._id), null, null, null, null);
         if (creatorsCursor!=null){
-            holder.mCreators.setText(mContext.getString(R.string.creators_tmp,Anime.creatorsFromCursorAsString(creatorsCursor)));
+            String s = Anime.creatorsFromCursorAsString(creatorsCursor);
+            s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;
+            holder.mCreators.setText(s);
             creatorsCursor.close();
         }
 
-        holder.mPlot.setText(anime.plot);
+        holder.mPlot.setText((anime.plot==null)?mContext.getString(R.string.unknown):anime.plot);
 
         ImageLoader.loadImageToView(anime.posterUrl, mContext, holder.mPoster);
 
