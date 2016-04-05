@@ -61,7 +61,11 @@ public class SearchAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
             themesCursor.close();
         }
 
-        holder.mCreators.setText(mContext.getString(R.string.creators_tmp, Anime.printList(anime.creators)));
+        Cursor creatorsCursor  = mContext.getContentResolver().query(Contract.PersonEntry.buildPersonsForManga((long) anime._id), null, null, null, null);
+        if (creatorsCursor!=null){
+            holder.mCreators.setText(mContext.getString(R.string.creators_tmp,Anime.creatorsFromCursorAsString(creatorsCursor)));
+            creatorsCursor.close();
+        }
 
         ImageLoader.loadImageToView(anime.posterUrl, mContext, holder.mPoster);
 

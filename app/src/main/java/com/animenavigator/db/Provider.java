@@ -29,6 +29,11 @@ public class Provider extends ContentProvider{
     static final int THEME_WITH_ID = 301;
     static final int THEME_FOR_MANGA = 302;
 
+    static final int PERSON = 400;
+    static final int PERSON_WITH_ID = 401;
+    static final int PERSON_FOR_MANGA = 402;
+    static final int PERSON_AND_TASK_FOR_MANGA = 403;
+
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CONTENT_AUTHORITY;
@@ -37,19 +42,28 @@ public class Provider extends ContentProvider{
 
         sUriMatcher.addURI(authority, PATH_GENRE, GENRE);
         sUriMatcher.addURI(authority, PATH_GENRE+"/#", GENRE_WITH_ID);
-        sUriMatcher.addURI(authority, PATH_GENRE+"/"+PATH_GENRE_FOR_MANGA+"/#", GENRE_FOR_MANGA);
+        sUriMatcher.addURI(authority, PATH_GENRE+"/"+PATH_MANGA+"/#", GENRE_FOR_MANGA);
 
         sUriMatcher.addURI(authority, PATH_THEME, THEME);
         sUriMatcher.addURI(authority, PATH_THEME+"/#", THEME_WITH_ID);
-        sUriMatcher.addURI(authority, PATH_THEME+'/'+PATH_THEME_FOR_MANGA+"/#", THEME_FOR_MANGA);
+        sUriMatcher.addURI(authority, PATH_THEME+'/'+PATH_MANGA+"/#", THEME_FOR_MANGA);
+
+        sUriMatcher.addURI(authority, PATH_PERSON, PERSON);
+        sUriMatcher.addURI(authority, PATH_PERSON+"/#", PERSON_WITH_ID);
+        sUriMatcher.addURI(authority, PATH_PERSON+'/'+PATH_MANGA+"/#", PERSON_FOR_MANGA);
+        sUriMatcher.addURI(authority, PATH_PERSON+'/'+PATH_TASK+'/'+PATH_MANGA+"/#", PERSON_AND_TASK_FOR_MANGA);
     }
 
     private static final SQLiteQueryBuilder sGenresForMangaQueryBuilder;
     private static final SQLiteQueryBuilder sThemesForMangaQueryBuilder;
+    private static final SQLiteQueryBuilder sPersonsForMangaQueryBuilder;
+    private static final SQLiteQueryBuilder sPersonsAndTasksForMangaQueryBuilder;
 
     static{
         sGenresForMangaQueryBuilder = new SQLiteQueryBuilder();
         sThemesForMangaQueryBuilder = new SQLiteQueryBuilder();
+        sPersonsForMangaQueryBuilder = new SQLiteQueryBuilder();
+        sPersonsAndTasksForMangaQueryBuilder = new SQLiteQueryBuilder();
 
         sGenresForMangaQueryBuilder.setTables(
                 GenreEntry.TABLE_NAME + " INNER JOIN " +
@@ -66,6 +80,33 @@ public class Provider extends ContentProvider{
                         "." + ThemeEntry._ID +
                         " = " + MangaThemeEntry.TABLE_NAME +
                         "." + MangaThemeEntry.THEME_ID_COLUMN);
+
+        sPersonsForMangaQueryBuilder.setTables(
+                PersonEntry.TABLE_NAME + " INNER JOIN " +
+                        MangaStaffEntry.TABLE_NAME +
+                        " ON " + PersonEntry.TABLE_NAME +
+                        "." + PersonEntry._ID +
+                        " = " + MangaStaffEntry.TABLE_NAME +
+                        "." + MangaStaffEntry.PERSON_ID_COLUMN);
+
+        sPersonsForMangaQueryBuilder.setDistinct(true);
+
+        sPersonsAndTasksForMangaQueryBuilder.setTables(
+                PersonEntry.TABLE_NAME +
+                        " INNER JOIN " +
+                        MangaStaffEntry.TABLE_NAME +
+                        " ON " +
+                        PersonEntry.TABLE_NAME + "." + PersonEntry._ID +
+                        " = " +
+                        MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.PERSON_ID_COLUMN +
+                        " INNER JOIN " +
+                        TaskEntry.TABLE_NAME +
+                        " ON " +
+                        MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.TASK_ID_COLUMN +
+                        " = " +
+                        TaskEntry.TABLE_NAME + "." + TaskEntry._ID);
+
+        sPersonsAndTasksForMangaQueryBuilder.setDistinct(true);
     }
 
     private DbHelper mDbHelper;
@@ -116,6 +157,19 @@ public class Provider extends ContentProvider{
                 retCursor = sThemesForMangaQueryBuilder.query(db,projection,MangaThemeEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
+            case PERSON:
+                retCursor = db.query(PersonEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+                break;
+            case PERSON_WITH_ID:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(PersonEntry.TABLE_NAME,projection,ThemeEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case PERSON_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = sPersonsForMangaQueryBuilder.query(db,new String[]{PersonEntry.TABLE_NAME+"."+PersonEntry._ID,PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN},MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }
@@ -143,6 +197,12 @@ public class Provider extends ContentProvider{
                 return ThemeEntry.CONTENT_ITEM_TYPE;
             case THEME_FOR_MANGA:
                 return ThemeEntry.CONTENT_DIR_TYPE;
+            case PERSON:
+                return PersonEntry.CONTENT_DIR_TYPE;
+            case PERSON_WITH_ID:
+                return PersonEntry.CONTENT_ITEM_TYPE;
+            case PERSON_FOR_MANGA:
+                return PersonEntry.CONTENT_DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }
