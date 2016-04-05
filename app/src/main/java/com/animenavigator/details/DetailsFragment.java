@@ -115,6 +115,9 @@ public class DetailsFragment extends Fragment {
                 if (type != null) {
                     type.setText(Character.toUpperCase(anime.type.charAt(0)) + anime.type.substring(1));
                 }
+                if (vintage!=null){
+                    vintage.setText(anime.vintage);
+                }
 
                 /*final TextView genres = (TextView)mView.findViewById(R.id.genres);
                 if (genres!=null) {

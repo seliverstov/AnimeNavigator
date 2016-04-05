@@ -19,6 +19,7 @@ public class Anime {
     public String type;
     public String title;
     public String posterUrl;
+    public String vintage;
     public float rating;
     public List<String> genres;
     public List<String> themes;
@@ -113,8 +114,9 @@ public class Anime {
         a.type = c.getString(c.getColumnIndex(MangaEntry.TYPE_COLUMN));
         a.title = c.getString(c.getColumnIndex(MangaEntry.NAME_COLUMN));
         a.plot = c.getString(c.getColumnIndex(MangaEntry.PLOT_COLUMN));
-        a.rating = c.getFloat(c.getColumnIndex(MangaEntry.WEIGHTED_SCORE_COLUMN));
+        a.rating = c.getFloat(c.getColumnIndex(MangaEntry.BAYESIAN_SCORE_COLUMN));
         a.posterUrl = c.getString(c.getColumnIndex(MangaEntry.PICTURE_COLUMN));
+        a.vintage = c.getString(c.getColumnIndex(MangaEntry.VINTAGE_COLUMN));
         return a;
     }
 }

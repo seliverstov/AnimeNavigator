@@ -26,7 +26,7 @@ public class DetailsPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: return SummaryFragment.newInstance(mMangaUri);
-            case 1: return PageFragment.newInstance(position);
+            case 1: return RelatedFragment.newInstance(mMangaUri);
             case 2: return PageFragment.newInstance(position);
             default: return null;
         }

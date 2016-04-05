@@ -1,17 +1,21 @@
 package com.animenavigator.details;
 
 import android.content.ContentUris;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 
 import com.animenavigator.R;
+import com.animenavigator.common.ItemSelectedCallback;
+import com.animenavigator.db.Contract;
 
 /**
  * Created by a.g.seliverstov on 23.03.2016.
  */
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements ItemSelectedCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,4 +47,10 @@ public class DetailsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemSelected(int id) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.setData(ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
+        startActivity(intent);
+    }
 }

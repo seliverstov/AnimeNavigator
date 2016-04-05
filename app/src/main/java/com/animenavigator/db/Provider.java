@@ -20,6 +20,7 @@ public class Provider extends ContentProvider{
 
     static final int MANGA = 100;
     static final int MANGA_WITH_ID = 101;
+    static final int MANGA_RELATED_FOR_MANGA = 102;
 
     static final int GENRE = 200;
     static final int GENRE_WITH_ID = 201;
@@ -43,6 +44,7 @@ public class Provider extends ContentProvider{
         final String authority = CONTENT_AUTHORITY;
         sUriMatcher.addURI(authority, PATH_MANGA, MANGA);
         sUriMatcher.addURI(authority, PATH_MANGA+"/#", MANGA_WITH_ID);
+        sUriMatcher.addURI(authority, PATH_MANGA+"/"+PATH_RELATED+"/#", MANGA_RELATED_FOR_MANGA);
 
         sUriMatcher.addURI(authority, PATH_GENRE, GENRE);
         sUriMatcher.addURI(authority, PATH_GENRE+"/#", GENRE_WITH_ID);
@@ -66,55 +68,76 @@ public class Provider extends ContentProvider{
     private static final SQLiteQueryBuilder sThemesForMangaQueryBuilder;
     private static final SQLiteQueryBuilder sPersonsForMangaQueryBuilder;
     private static final SQLiteQueryBuilder sPersonsAndTasksForMangaQueryBuilder;
+    private static final SQLiteQueryBuilder sMangaRelatedForMangaQueryBuilder;
 
     static{
         sGenresForMangaQueryBuilder = new SQLiteQueryBuilder();
         sThemesForMangaQueryBuilder = new SQLiteQueryBuilder();
         sPersonsForMangaQueryBuilder = new SQLiteQueryBuilder();
         sPersonsAndTasksForMangaQueryBuilder = new SQLiteQueryBuilder();
+        sMangaRelatedForMangaQueryBuilder = new SQLiteQueryBuilder();
 
         sGenresForMangaQueryBuilder.setTables(
-                GenreEntry.TABLE_NAME + " INNER JOIN " +
-                        MangaGenreEntry.TABLE_NAME +
-                        " ON " + GenreEntry.TABLE_NAME +
-                        "." + GenreEntry._ID +
-                        " = " + MangaGenreEntry.TABLE_NAME +
-                        "." + MangaGenreEntry.GENRE_ID_COLUMN);
+                GenreEntry.TABLE_NAME +
+                " INNER JOIN " +
+                MangaGenreEntry.TABLE_NAME +
+                " ON " +
+                GenreEntry.TABLE_NAME + "." + GenreEntry._ID +
+                " = " +
+                MangaGenreEntry.TABLE_NAME + "." + MangaGenreEntry.GENRE_ID_COLUMN);
 
         sThemesForMangaQueryBuilder.setTables(
-                ThemeEntry.TABLE_NAME + " INNER JOIN " +
-                        MangaThemeEntry.TABLE_NAME +
-                        " ON " + ThemeEntry.TABLE_NAME +
-                        "." + ThemeEntry._ID +
-                        " = " + MangaThemeEntry.TABLE_NAME +
-                        "." + MangaThemeEntry.THEME_ID_COLUMN);
+                ThemeEntry.TABLE_NAME +
+                " INNER JOIN " +
+                MangaThemeEntry.TABLE_NAME +
+                " ON " +
+                ThemeEntry.TABLE_NAME + "." + ThemeEntry._ID +
+                " = " +
+                MangaThemeEntry.TABLE_NAME + "." + MangaThemeEntry.THEME_ID_COLUMN);
 
         sPersonsForMangaQueryBuilder.setTables(
-                PersonEntry.TABLE_NAME + " INNER JOIN " +
-                        MangaStaffEntry.TABLE_NAME +
-                        " ON " + PersonEntry.TABLE_NAME +
-                        "." + PersonEntry._ID +
-                        " = " + MangaStaffEntry.TABLE_NAME +
-                        "." + MangaStaffEntry.PERSON_ID_COLUMN);
+                PersonEntry.TABLE_NAME +
+                " INNER JOIN " +
+                MangaStaffEntry.TABLE_NAME +
+                " ON " +
+                PersonEntry.TABLE_NAME + "." + PersonEntry._ID +
+                " = " +
+                MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.PERSON_ID_COLUMN);
 
         sPersonsForMangaQueryBuilder.setDistinct(true);
 
         sPersonsAndTasksForMangaQueryBuilder.setTables(
                 PersonEntry.TABLE_NAME +
-                        " INNER JOIN " +
-                        MangaStaffEntry.TABLE_NAME +
-                        " ON " +
-                        PersonEntry.TABLE_NAME + "." + PersonEntry._ID +
-                        " = " +
-                        MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.PERSON_ID_COLUMN +
-                        " INNER JOIN " +
-                        TaskEntry.TABLE_NAME +
-                        " ON " +
-                        MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.TASK_ID_COLUMN +
-                        " = " +
-                        TaskEntry.TABLE_NAME + "." + TaskEntry._ID);
+                " INNER JOIN " +
+                MangaStaffEntry.TABLE_NAME +
+                " ON " +
+                PersonEntry.TABLE_NAME + "." + PersonEntry._ID +
+                " = " +
+                MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.PERSON_ID_COLUMN +
+                " INNER JOIN " +
+                TaskEntry.TABLE_NAME +
+                " ON " +
+                MangaStaffEntry.TABLE_NAME + "." + MangaStaffEntry.TASK_ID_COLUMN +
+                " = " +
+                TaskEntry.TABLE_NAME + "." + TaskEntry._ID);
 
         sPersonsAndTasksForMangaQueryBuilder.setDistinct(true);
+
+        sMangaRelatedForMangaQueryBuilder.setTables(
+                MangaEntry.TABLE_NAME +
+                " INNER JOIN " +
+                MangaRelatedEntry.TABLE_NAME +
+                " ON " +
+                MangaEntry.TABLE_NAME + "." + MangaEntry._ID +
+                " = " +
+                MangaRelatedEntry.TABLE_NAME + "." + MangaRelatedEntry.REL_MANGA_ID_COLUMN +
+                " INNER JOIN " +
+                RelatedEntry.TABLE_NAME +
+                " ON " +
+                MangaRelatedEntry.TABLE_NAME + "." + MangaRelatedEntry.REL_ID_COLUMN +
+                " = " +
+                RelatedEntry.TABLE_NAME + "." + RelatedEntry._ID
+        );
     }
 
     private DbHelper mDbHelper;
@@ -138,6 +161,24 @@ public class Provider extends ContentProvider{
             case MANGA_WITH_ID:{
                 String id = String.valueOf(ContentUris.parseId(uri));
                 retCursor = db.query(MangaEntry.TABLE_NAME,projection,MangaEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case MANGA_RELATED_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = sMangaRelatedForMangaQueryBuilder.query(db,
+                        new String[]{
+                                MangaEntry.TABLE_NAME+"."+MangaEntry._ID,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.NAME_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.TYPE_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.VINTAGE_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.PLOT_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.PICTURE_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.VOTES_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.WEIGHTED_SCORE_COLUMN,
+                                MangaEntry.TABLE_NAME+"."+MangaEntry.BAYESIAN_SCORE_COLUMN,
+                                RelatedEntry.TABLE_NAME+"."+RelatedEntry.NAME_COLUMN
+                        },
+                        MangaRelatedEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
             case GENRE: {
@@ -179,12 +220,21 @@ public class Provider extends ContentProvider{
             }
             case PERSON_FOR_MANGA:{
                 String id = String.valueOf(ContentUris.parseId(uri));
-                retCursor = sPersonsForMangaQueryBuilder.query(db,new String[]{PersonEntry.TABLE_NAME+"."+PersonEntry._ID,PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN},MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
+                retCursor = sPersonsForMangaQueryBuilder.query(db,
+                        new String[]{
+                                PersonEntry.TABLE_NAME+"."+PersonEntry._ID,
+                                PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN
+                        },MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
             case PERSON_AND_TASK_FOR_MANGA:{
                 String id = String.valueOf(ContentUris.parseId(uri));
-                retCursor = sPersonsAndTasksForMangaQueryBuilder.query(db,new String[]{PersonEntry.TABLE_NAME+"."+PersonEntry._ID,PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN,TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN},MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN);
+                retCursor = sPersonsAndTasksForMangaQueryBuilder.query(db,
+                        new String[]{
+                                PersonEntry.TABLE_NAME+"."+PersonEntry._ID,
+                                PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN,
+                                TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN
+                        },MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN);
                 break;
             }
             case TITLE: {
@@ -216,6 +266,8 @@ public class Provider extends ContentProvider{
                 return MangaEntry.CONTENT_DIR_TYPE;
             case MANGA_WITH_ID:
                 return MangaEntry.CONTENT_ITEM_TYPE;
+            case MANGA_RELATED_FOR_MANGA:
+                return MangaEntry.CONTENT_DIR_TYPE;
             case GENRE:
                 return GenreEntry.CONTENT_DIR_TYPE;
             case GENRE_WITH_ID:

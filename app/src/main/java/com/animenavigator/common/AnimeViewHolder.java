@@ -21,6 +21,7 @@ public class AnimeViewHolder extends RecyclerView.ViewHolder {
     public TextView mThemes;
     public TextView mCreators;
     public TextView mPlot;
+    public TextView mRelated;
 
     public AnimeViewHolder(View itemView) {
         super(itemView);
@@ -33,5 +34,6 @@ public class AnimeViewHolder extends RecyclerView.ViewHolder {
         mThemes = (TextView)itemView.findViewById(R.id.item_themes);
         mCreators = (TextView)itemView.findViewById(R.id.item_creators);
         mPlot = (TextView)itemView.findViewById(R.id.item_plot);
+        mRelated = (TextView)itemView.findViewById(R.id.item_related);
     }
 }
