@@ -108,10 +108,28 @@ public class Anime {
         return result;
     }
 
+    public static String genresFromCursorAsString(Cursor c){
+        String result = "";
+        while (c.moveToNext()){
+            String s = c.getString(c.getColumnIndex(GenreEntry.NAME_COLUMN));
+            result+= (c.isFirst())?s:", "+s;
+        }
+        return result;
+    }
+
     public static List<String> themesFromCursor(Cursor c){
         List<String> result = new ArrayList<>();
         while (c.moveToNext()){
             result.add(c.getString(c.getColumnIndex(ThemeEntry.NAME_COLUMN)));
+        }
+        return result;
+    }
+
+    public static String themesFromCursorAsString(Cursor c){
+        String result = "";
+        while (c.moveToNext()){
+            String s = c.getString(c.getColumnIndex(ThemeEntry.NAME_COLUMN));
+            result+= (c.isFirst())?s:", "+s;
         }
         return result;
     }

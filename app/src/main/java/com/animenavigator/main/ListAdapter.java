@@ -10,6 +10,7 @@ import com.animenavigator.common.AnimeViewHolder;
 import com.animenavigator.common.ImageLoader;
 import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
+import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 
 import java.text.DecimalFormat;
@@ -47,9 +48,17 @@ public class ListAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
 
         //holder.mTitles.setText(mContext.getString(R.string.titles_tmp, Anime.printList(anime.alternativeTitles)));
 
-        holder.mGenres.setText(Anime.printList(anime.genres));
+        Cursor genresCursor  = mContext.getContentResolver().query(Contract.GenreEntry.buildGenreForManga((long) anime._id), null, null, null, null);
+        if (genresCursor!=null){
+            holder.mGenres.setText(mContext.getString(R.string.genres_tmp,Anime.genresFromCursorAsString(genresCursor)));
+            genresCursor.close();
+        }
 
-        holder.mThemes.setText(Anime.printList(anime.themes));
+        Cursor themesCursor  = mContext.getContentResolver().query(Contract.ThemeEntry.buildThemesForManga((long) anime._id), null, null, null, null);
+        if (themesCursor!=null){
+            holder.mThemes.setText(mContext.getString(R.string.themes_tmp, Anime.themesFromCursorAsString(themesCursor)));
+            themesCursor.close();
+        }
 
         holder.mCreators.setText(mContext.getString(R.string.creators_tmp, Anime.printList(anime.creators)));
 
