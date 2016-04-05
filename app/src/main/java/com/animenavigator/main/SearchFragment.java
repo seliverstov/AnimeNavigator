@@ -60,12 +60,22 @@ public class SearchFragment extends Fragment{
         });
 
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(getActivity(), simple_dropdown_item_1line);
-        for(String s:Anime.listGenres()){
-            searchAdapter.add(s);
+        Cursor genresCursor  = getContext().getContentResolver().query(Contract.GenreEntry.CONTENT_URI, null, null, null, null);
+        if (genresCursor!=null){
+            for(String s:Anime.genresFromCursor(genresCursor)){
+                searchAdapter.add(getContext().getString(R.string.genres_tmp,s));
+            }
+            genresCursor.close();
         }
-        for(String s:Anime.listThemes()){
-            searchAdapter.add(s);
+
+        Cursor themesCursor  = getContext().getContentResolver().query(Contract.ThemeEntry.CONTENT_URI, null, null, null, null);
+        if (themesCursor!=null){
+            for(String s:Anime.themesFromCursor(themesCursor)){
+                searchAdapter.add(getContext().getString(R.string.themes_tmp,s));
+            }
+            themesCursor.close();
         }
+
         mSearchView.setAdapter(searchAdapter);
 
         ImageButton btnClear = (ImageButton)view.findViewById(R.id.clear_btn);
