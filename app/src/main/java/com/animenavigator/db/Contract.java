@@ -25,6 +25,12 @@ public class Contract {
 
     public static final String PATH_RELATED = "related";
 
+    public static final String PATH_EPISODE = "episode";
+
+    public static final String PATH_LINK = "link";
+
+    public static final String PATH_REVIEW = "review";
+
     public static final class MangaEntry implements BaseColumns{
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MANGA).build();
         public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MANGA;
@@ -153,6 +159,57 @@ public class Contract {
         public static final String MANGA_ID_COLUMN = "manga_id";
         public static final String REL_ID_COLUMN = "rel_id";
         public static final String REL_MANGA_ID_COLUMN = "rel_manga_id";
+    }
+
+    public static final class MangaEpisodeEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EPISODE).build();
+        public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EPISODE;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EPISODE;
+
+        public static final String TABLE_NAME = "manga_episodes";
+
+        public static final String MANGA_ID_COLUMN = "manga_id";
+        public static final String NAME_COLUMN = "episode";
+        public static final String NUM_COLUMN = "num";
+        public static final String PART_COLUMN = "part";
+        public static final String LANG_COLUMN = "lang";
+
+        public static Uri buildEpisodesForManga(long mangaId) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_MANGA).appendPath(String.valueOf(mangaId)).build();
+        }
+    }
+
+    public static final class MangaReviewEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REVIEW).build();
+        public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REVIEW;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REVIEW;
+
+        public static final String TABLE_NAME = "manga_reviews";
+
+        public static final String MANGA_ID_COLUMN = "manga_id";
+        public static final String NAME_COLUMN = "review";
+        public static final String HREF_COLUMN = "href";
+
+        public static Uri buildReviewsForManga(long mangaId) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_MANGA).appendPath(String.valueOf(mangaId)).build();
+        }
+    }
+
+    public static final class MangaLinkEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_LINK).build();
+        public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LINK;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LINK;
+
+        public static final String TABLE_NAME = "manga_links";
+
+        public static final String MANGA_ID_COLUMN = "manga_id";
+        public static final String NAME_COLUMN = "link";
+        public static final String HREF_COLUMN = "href";
+        public static final String LANG_COLUMN = "lang";
+
+        public static Uri buildLinksForManga(long mangaId) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_MANGA).appendPath(String.valueOf(mangaId)).build();
+        }
     }
 
 }

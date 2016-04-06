@@ -39,6 +39,18 @@ public class Provider extends ContentProvider{
     static final int TITLE_WITH_ID = 501;
     static final int TITLE_FOR_MANGA = 502;
 
+    static final int REVIEW = 600;
+    static final int REVIEW_WITH_ID = 601;
+    static final int REVIEW_FOR_MANGA = 602;
+
+    static final int LINK = 700;
+    static final int LINK_WITH_ID = 701;
+    static final int LINK_FOR_MANGA = 702;
+
+    static final int EPISODE = 800;
+    static final int EPISODE_WITH_ID = 801;
+    static final int EPISODE_FOR_MANGA = 802;
+
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CONTENT_AUTHORITY;
@@ -62,6 +74,18 @@ public class Provider extends ContentProvider{
         sUriMatcher.addURI(authority, PATH_TITLE, TITLE);
         sUriMatcher.addURI(authority, PATH_TITLE+"/#", TITLE_WITH_ID);
         sUriMatcher.addURI(authority, PATH_TITLE+'/'+PATH_MANGA+"/#", TITLE_FOR_MANGA);
+
+        sUriMatcher.addURI(authority, PATH_REVIEW, REVIEW);
+        sUriMatcher.addURI(authority, PATH_REVIEW+"/#", REVIEW_WITH_ID);
+        sUriMatcher.addURI(authority, PATH_REVIEW+'/'+PATH_MANGA+"/#", REVIEW_FOR_MANGA);
+
+        sUriMatcher.addURI(authority, PATH_LINK, LINK);
+        sUriMatcher.addURI(authority, PATH_LINK+"/#", LINK_WITH_ID);
+        sUriMatcher.addURI(authority, PATH_LINK+'/'+PATH_MANGA+"/#", LINK_FOR_MANGA);
+
+        sUriMatcher.addURI(authority, PATH_EPISODE, EPISODE);
+        sUriMatcher.addURI(authority, PATH_EPISODE+"/#", EPISODE_WITH_ID);
+        sUriMatcher.addURI(authority, PATH_EPISODE+'/'+PATH_MANGA+"/#", EPISODE_FOR_MANGA);
     }
 
     private static final SQLiteQueryBuilder sGenresForMangaQueryBuilder;
@@ -251,6 +275,48 @@ public class Provider extends ContentProvider{
                 retCursor = db.query(MangaTitleEntry.TABLE_NAME,projection,MangaTitleEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
+            case REVIEW: {
+                retCursor = db.query(MangaReviewEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            }
+            case REVIEW_WITH_ID:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaReviewEntry.TABLE_NAME,projection,MangaReviewEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case REVIEW_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaReviewEntry.TABLE_NAME,projection,MangaReviewEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case LINK: {
+                retCursor = db.query(MangaLinkEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            }
+            case LINK_WITH_ID:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaLinkEntry.TABLE_NAME,projection,MangaLinkEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case LINK_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaLinkEntry.TABLE_NAME,projection,MangaLinkEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case EPISODE: {
+                retCursor = db.query(MangaEpisodeEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            }
+            case EPISODE_WITH_ID:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaEpisodeEntry.TABLE_NAME,projection,MangaEpisodeEntry._ID+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
+            case EPISODE_FOR_MANGA:{
+                String id = String.valueOf(ContentUris.parseId(uri));
+                retCursor = db.query(MangaEpisodeEntry.TABLE_NAME,projection,MangaEpisodeEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }
@@ -294,6 +360,24 @@ public class Provider extends ContentProvider{
                 return MangaTitleEntry.CONTENT_ITEM_TYPE;
             case TITLE_FOR_MANGA:
                 return MangaTitleEntry.CONTENT_DIR_TYPE;
+            case REVIEW:
+                return MangaTitleEntry.CONTENT_DIR_TYPE;
+            case REVIEW_WITH_ID:
+                return MangaTitleEntry.CONTENT_ITEM_TYPE;
+            case REVIEW_FOR_MANGA:
+                return MangaTitleEntry.CONTENT_DIR_TYPE;
+            case LINK:
+                return MangaLinkEntry.CONTENT_DIR_TYPE;
+            case LINK_WITH_ID:
+                return MangaLinkEntry.CONTENT_ITEM_TYPE;
+            case LINK_FOR_MANGA:
+                return MangaLinkEntry.CONTENT_DIR_TYPE;
+            case EPISODE:
+                return MangaEpisodeEntry.CONTENT_DIR_TYPE;
+            case EPISODE_WITH_ID:
+                return MangaEpisodeEntry.CONTENT_ITEM_TYPE;
+            case EPISODE_FOR_MANGA:
+                return MangaEpisodeEntry.CONTENT_DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }

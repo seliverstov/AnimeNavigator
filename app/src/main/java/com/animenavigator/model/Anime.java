@@ -21,18 +21,7 @@ public class Anime {
     public String posterUrl;
     public String vintage;
     public float rating;
-    public List<String> genres;
-    public List<String> themes;
-    public List<String> alternativeTitles;
-    public List<String> creators;
     public String plot;
-
-    public static String printList(List list){
-        String result = list.toString();
-        if (result.startsWith("[")) result=result.substring(1);
-        if (result.endsWith("]")) result=result.substring(0,result.length()-1);
-        return result.replaceAll("Genre: ","").replaceAll("Theme: ", "");
-    }
 
     public static List<String> genresFromCursor(Cursor c){
         List<String> result = new ArrayList<>();
@@ -118,5 +107,45 @@ public class Anime {
         a.posterUrl = c.getString(c.getColumnIndex(MangaEntry.PICTURE_COLUMN));
         a.vintage = c.getString(c.getColumnIndex(MangaEntry.VINTAGE_COLUMN));
         return a;
+    }
+
+    public static String reviewsFromCursorAsHtml(Cursor c) {
+        StringBuilder sb = new StringBuilder();
+        while (c.moveToNext()){
+            String href = c.getString(c.getColumnIndex(MangaReviewEntry.HREF_COLUMN));
+            String name = c.getString(c.getColumnIndex(MangaReviewEntry.NAME_COLUMN));
+            if (href!=null && name!=null)
+                sb.append("<a href='"+href+"'>"+name+"</a><br/><br/>");
+        }
+        String result = sb.toString();
+        if (result.endsWith("<br/><br/>"))
+            result = result.substring(0,result.length()-5);
+        return result;
+    }
+
+    public static String linksFromCursorAsHtml(Cursor c) {
+        StringBuilder sb = new StringBuilder();
+        while (c.moveToNext()){
+            String href = c.getString(c.getColumnIndex(MangaLinkEntry.HREF_COLUMN));
+            String name = c.getString(c.getColumnIndex(MangaLinkEntry.NAME_COLUMN));
+            if (href!=null && name!=null)
+                sb.append("<a href='"+href+"'>"+name+"</a><br/><br/>");
+        }
+        String result = sb.toString();
+        if (result.endsWith("<br/><br/>"))
+            result = result.substring(0,result.length()-5);
+        return result;
+    }
+
+    public static String episodesFromCursorAsHtml(Cursor c) {
+        StringBuilder sb = new StringBuilder();
+        while (c.moveToNext()){
+            String num = c.getString(c.getColumnIndex(MangaEpisodeEntry.NUM_COLUMN));
+            String part = c.getString(c.getColumnIndex(MangaEpisodeEntry.PART_COLUMN));
+            String name = c.getString(c.getColumnIndex(MangaEpisodeEntry.NAME_COLUMN));
+            num = (num==null) ? "": num;
+            sb.append(num+(part==null?"":"."+part)+" "+name+"<br/>");
+        }
+        return sb.toString();
     }
 }
