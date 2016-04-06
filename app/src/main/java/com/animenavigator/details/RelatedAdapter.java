@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 
 import com.animenavigator.R;
 import com.animenavigator.common.AnimeViewHolder;
+import com.animenavigator.common.AnimeItemAdapter;
 import com.animenavigator.db.Contract;
-import com.animenavigator.main.SearchAdapter;
+import com.animenavigator.model.Anime;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by a.g.seliverstov on 05.04.2016.
  */
-public class RelatedAdapter extends SearchAdapter {
+public class RelatedAdapter extends AnimeItemAdapter {
     private Context mContext;
 
     public RelatedAdapter(Context context, Cursor cursor){
@@ -29,15 +32,4 @@ public class RelatedAdapter extends SearchAdapter {
         return new AnimeViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(final AnimeViewHolder holder, Cursor cursor) {
-        String related = cursor.getString(cursor.getColumnIndex(Contract.RelatedEntry.NAME_COLUMN));
-
-        if (holder.mRelated!=null && related!=null && !"".equals(related)){
-            related = Character.toUpperCase(related.charAt(0)) + related.substring(1);
-            holder.mRelated.setText(related);
-        }
-
-        super.onBindViewHolder(holder, cursor);
-    }
 }
