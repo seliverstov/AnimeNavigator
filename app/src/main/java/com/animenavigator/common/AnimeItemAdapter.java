@@ -36,6 +36,14 @@ public class AnimeItemAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder>
         if (holder.mTitle!=null)
             holder.mTitle.setText((anime.title==null)?mContext.getString(R.string.unknown):anime.title);
 
+        if (holder.mType!=null) {
+            if (anime.type != null && !"".equals(anime.type))
+                holder.mType.setText(Character.toUpperCase(anime.type.charAt(0)) + anime.type.substring(1));
+        }
+
+        if (holder.mVintage!=null && anime.vintage!=null)
+            holder.mVintage.setText(anime.vintage);
+
         if (holder.mRating!=null)
             holder.mRating.setText(new DecimalFormat("#.#").format(anime.rating));
 

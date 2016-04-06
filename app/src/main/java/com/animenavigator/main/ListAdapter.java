@@ -31,12 +31,4 @@ public class ListAdapter extends AnimeItemAdapter {
         return new AnimeViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(AnimeViewHolder holder, Cursor cursor) {
-        super.onBindViewHolder(holder, cursor);
-        final Anime anime = Anime.fromCursor(cursor);
-        if (holder.mRating!=null)
-            holder.mRating.setText(mContext.getString(R.string.rating_tmp, new DecimalFormat("#.#").format(anime.rating)));
-
-    }
 }

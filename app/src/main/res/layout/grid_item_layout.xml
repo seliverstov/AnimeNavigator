@@ -36,21 +36,33 @@
                     android:gravity="start"/>
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:layout_gravity="end|top"
-                    android:gravity="end">
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_grade_black_18dp"
-                        />
-                    <TextView
-                        android:id="@+id/item_rating"
+                    android:orientation="vertical">
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:orientation="horizontal"
+                        android:layout_gravity="end|top"
+                        android:gravity="end|top">
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_grade_black_18dp"
+                            />
+                        <TextView
+                            android:id="@+id/item_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/item_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:gravity="end|bottom"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -47,11 +47,10 @@
             android:ellipsize="end"
             android:gravity="start"/>
         <TextView
-            android:id="@+id/item_titles"
+            android:id="@+id/item_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:text="@string/titles_tmp"
             android:maxLines="1"
             android:ellipsize="end"
             android:gravity="start"/>
