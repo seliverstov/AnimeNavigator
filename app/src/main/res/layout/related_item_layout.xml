@@ -2,96 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp">
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/item_related"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:textAppearance="@android:style/TextAppearance.Medium"
         />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center">
-            <ImageView
-                android:id="@+id/item_poster"
-                android:layout_width="@dimen/poster_small_width"
-                android:layout_height="@dimen/poster_small_height"
-                android:scaleType="centerCrop"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="end|bottom"
-                android:background="@color/cardview_light_background"
-                android:gravity="end">
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_grade_black_18dp"
-                    />
-                <TextView
-                    android:id="@+id/item_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/item_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="start"/>
-            <TextView
-                android:id="@+id/item_titles"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:text="@string/titles_tmp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="start"/>
-            <TextView
-                android:id="@+id/item_creators"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:text="@string/creators_tmp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="start"/>
-            <TextView
-                android:id="@+id/item_genres"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:text="@string/genres_tmp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="start"/>
-            <TextView
-                android:id="@+id/item_themes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:text="@string/themes_tmp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="start"/>
-        </LinearLayout>
-    </LinearLayout>
+    <include layout="@layout/search_item_layout"/>
 </LinearLayout>
