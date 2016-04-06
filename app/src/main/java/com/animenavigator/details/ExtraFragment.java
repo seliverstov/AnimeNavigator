@@ -93,13 +93,14 @@ public class ExtraFragment extends Fragment {
                 final TextView links = (TextView) mView.findViewById(R.id.links);
                 if (reviews != null) {
                     Cursor linksCursor = mContext.getContentResolver().query(Contract.MangaLinkEntry.buildLinksForManga((long) anime._id), null, null, null, null);
+                    String sourceLink = "<a href='"+mContext.getString(R.string.ANN_URL,anime._id)+"'>"+mContext.getString(R.string.ANN)+"</a><br/>";
+                    links.setClickable(true);
+                    links.setMovementMethod(LinkMovementMethod.getInstance());
                     if (linksCursor != null && linksCursor.getCount()>0) {
-                        links.setClickable(true);
-                        links.setMovementMethod(LinkMovementMethod.getInstance());
-                        links.setText(Html.fromHtml(Anime.linksFromCursorAsHtml(linksCursor)));
+                        links.setText(Html.fromHtml(sourceLink+"<br/>"+Anime.linksFromCursorAsHtml(linksCursor)));
                         linksCursor.close();
                     }else{
-                        links.setText(mContext.getString(R.string.no_links));
+                        links.setText(Html.fromHtml(sourceLink));
                     }
                 }
 
