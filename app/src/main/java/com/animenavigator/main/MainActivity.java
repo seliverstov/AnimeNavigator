@@ -2,7 +2,8 @@ package com.animenavigator.main;
 
 import android.content.ContentUris;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.animenavigator.common.Const;
 import com.animenavigator.db.Contract;
 import com.animenavigator.details.DetailsActivity;
 import com.animenavigator.details.DetailsFragment;
@@ -43,16 +45,35 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
 
         NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
 
-        if (navigationView!=null)
+        if (navigationView!=null) {
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem item) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                     item.setChecked(true);
+                    switch (item.getItemId()) {
+                        case R.id.anime_and_manga:
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, null).apply();
+                            break;
+                        case R.id.anime:
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, Const.SP_ANIME_TYPE).apply();
+                            break;
+                        case R.id.manga:
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, Const.SP_MANGA_TYPE).apply();
+                            break;
+                        default:
+                            Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                    }
                     mDrawerLayout.closeDrawers();
-                    Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            String type = sp.getString(Const.SP_ANIME_TYPE_KEY,null);
+            if (Const.SP_ANIME_TYPE.equals(type)) navigationView.setCheckedItem(R.id.anime);
+            else if (Const.SP_MANGA_TYPE.equals(type)) navigationView.setCheckedItem(R.id.manga);
+            else navigationView.setCheckedItem(R.id.anime_and_manga);
+        }
 
         if (findViewById(R.id.two_pane_layout)!=null){
             mTwoPane = true;

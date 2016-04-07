@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.animenavigator.common.PagerAdapter;
 import com.animenavigator.R;
 
 /**
@@ -20,7 +19,7 @@ public class MainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.main_fragment,container,false);
-        PagerAdapter adapter = new PagerAdapter(getActivity().getSupportFragmentManager(),getActivity());
+        MainPagerAdapter adapter = new MainPagerAdapter(getActivity().getSupportFragmentManager(),getActivity());
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.main_viewpager);
         if (viewPager!=null) {

@@ -1,4 +1,4 @@
-package com.animenavigator.common;
+package com.animenavigator.main;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.animenavigator.R;
+import com.animenavigator.common.PageFragment;
 import com.animenavigator.main.GridFragment;
 import com.animenavigator.main.ListFragment;
 import com.animenavigator.main.SearchFragment;
@@ -13,9 +14,9 @@ import com.animenavigator.main.SearchFragment;
 /**
  * Created by alexander on 19.03.2016.
  */
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
-    public PagerAdapter(FragmentManager fm, Context context) {
+    public MainPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         mContext = context;
     }
@@ -23,9 +24,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch(position){
-            case 0 : return new GridFragment();
-            case 1 : return new SearchFragment();
-            case 2 : return new ListFragment();
+            case 0 : return GridFragment.newInstance(position);
+            case 1 : return SearchFragment.newInstance(position);
+            case 2 : return ListFragment.newInstance(position);
             default: return PageFragment.newInstance(position);
         }
     }
