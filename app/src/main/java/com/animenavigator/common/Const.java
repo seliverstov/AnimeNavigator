@@ -7,4 +7,5 @@ public class Const {
     public static final String SP_ANIME_TYPE_KEY = "ANIME_TYPE";
     public static final String SP_ANIME_TYPE = "anime";
     public static final String SP_MANGA_TYPE = "manga";
+    public static final String SP_SEARCH_KEY = "SEARCH";
 }

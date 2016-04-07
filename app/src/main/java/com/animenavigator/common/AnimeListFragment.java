@@ -32,7 +32,7 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(Const.SP_ANIME_TYPE_KEY)){
-            getLoaderManager().restartLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
+            restartLoader();
         }
     }
 
@@ -50,6 +50,10 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
             mSelection = null;
             mSelectionArgs = null;
         }
+    }
+
+    protected void restartLoader(){
+        getLoaderManager().restartLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
     }
 
     class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
