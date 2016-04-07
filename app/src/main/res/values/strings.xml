@@ -31,4 +31,5 @@
     <string name="no_episodes">No episodes</string>
     <string name="ANN">www.animenewsnetwork.com</string>
     <string name="ANN_URL">http://www.animenewsnetwork.com/encyclopedia/anime.php?id=%s</string>
+    <string name="no_related">No related</string>
 </resources>

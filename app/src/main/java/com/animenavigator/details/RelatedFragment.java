@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.animenavigator.R;
 import com.animenavigator.common.DividerItemDecoration;
@@ -27,6 +28,7 @@ public class RelatedFragment  extends Fragment{
     public static final String MANGA_URI_KEY = "MANGA_URI_KEY";
     private int RELATED_CURSOR_LOADER_ID = 6;
     private RelatedAdapter mAdapter;
+    private TextView mEmptyView;
 
     public static RelatedFragment newInstance(Uri uri){
         RelatedFragment fragment = new RelatedFragment();
@@ -47,6 +49,8 @@ public class RelatedFragment  extends Fragment{
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         recyclerView.addItemDecoration(itemDecoration);
+
+        mEmptyView = (TextView)view.findViewById(R.id.no_related);
         return view;
     }
 
@@ -82,6 +86,9 @@ public class RelatedFragment  extends Fragment{
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             mAdapter.swapCursor(data);
+            if (mEmptyView!=null){
+                mEmptyView.setVisibility((data==null || data.getCount()==0)?View.VISIBLE:View.GONE);
+            }
         }
 
         @Override
