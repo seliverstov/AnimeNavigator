@@ -274,7 +274,7 @@ public class Provider extends ContentProvider{
                                 PersonEntry.TABLE_NAME+"."+PersonEntry._ID,
                                 PersonEntry.TABLE_NAME+"."+PersonEntry.NAME_COLUMN,
                                 TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN
-                        },MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,TaskEntry.TABLE_NAME+"."+TaskEntry.NAME_COLUMN);
+                        },MangaStaffEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
             case TITLE: {
