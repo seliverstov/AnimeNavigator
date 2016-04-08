@@ -35,4 +35,5 @@
     <string name="anime_and_manga"><![CDATA[Anime & Manga]]></string>
     <string name="genre_search_prefix">Genres:</string>
     <string name="theme_search_prefix">Themes:</string>
+    <string name="loading">Loading</string>
 </resources>

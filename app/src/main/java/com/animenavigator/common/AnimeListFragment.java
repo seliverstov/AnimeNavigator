@@ -1,5 +1,6 @@
 package com.animenavigator.common;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -11,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+
+import com.animenavigator.R;
 import com.animenavigator.db.Contract;
 
 /**
@@ -20,6 +23,7 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
     protected AnimeItemAdapter mAdapter;
     protected String mSelection = null;
     protected String[] mSelectionArgs = null;
+    protected ProgressDialog progressDialog;
 
     public static final String ARG_LOADER_ID = "ARG_LOADER_ID";
     public static final String ARG_SORT_ORDER = "ARG_SORT_ORDER";
@@ -28,6 +32,11 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getActivity().getString(R.string.loading));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         getLoaderManager().initLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
     }
 
@@ -55,6 +64,7 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
     }
 
     protected void restartLoader(){
+        progressDialog.show();
         getLoaderManager().restartLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
     }
 
@@ -81,6 +91,7 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             mAdapter.swapCursor(data);
+            if (progressDialog!=null && progressDialog.isShowing()) progressDialog.hide();
         }
 
         @Override
