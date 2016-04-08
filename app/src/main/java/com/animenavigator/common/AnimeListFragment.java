@@ -3,6 +3,7 @@ package com.animenavigator.common;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
 
     public static final String ARG_LOADER_ID = "ARG_LOADER_ID";
     public static final String ARG_SORT_ORDER = "ARG_SORT_ORDER";
+    public static final String ARG_LOADER_URI = "ARG_LOADER_URI";
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -66,9 +68,10 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             refeshSelection(mContext);
+            Uri uri = getArguments().getParcelable(ARG_LOADER_URI);
             return new CursorLoader(
                     mContext,
-                    Contract.MangaEntry.CONTENT_URI,
+                    (uri==null)?Contract.MangaEntry.CONTENT_URI:uri,
                     null,
                     mSelection,
                     mSelectionArgs,

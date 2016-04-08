@@ -3,12 +3,22 @@ package com.animenavigator.db;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.animenavigator.R;
+import com.animenavigator.common.Const;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.animenavigator.db.Contract.*;
 
@@ -21,6 +31,7 @@ public class Provider extends ContentProvider{
     static final int MANGA = 100;
     static final int MANGA_WITH_ID = 101;
     static final int MANGA_RELATED_FOR_MANGA = 102;
+    static final int MANGA_SEARCH = 103;
 
     static final int GENRE = 200;
     static final int GENRE_WITH_ID = 201;
@@ -57,6 +68,7 @@ public class Provider extends ContentProvider{
         sUriMatcher.addURI(authority, PATH_MANGA, MANGA);
         sUriMatcher.addURI(authority, PATH_MANGA+"/#", MANGA_WITH_ID);
         sUriMatcher.addURI(authority, PATH_MANGA+"/"+PATH_RELATED+"/#", MANGA_RELATED_FOR_MANGA);
+        sUriMatcher.addURI(authority, PATH_MANGA+"/"+PATH_SEARCH, MANGA_SEARCH);
 
         sUriMatcher.addURI(authority, PATH_GENRE, GENRE);
         sUriMatcher.addURI(authority, PATH_GENRE+"/#", GENRE_WITH_ID);
@@ -205,6 +217,10 @@ public class Provider extends ContentProvider{
                         MangaRelatedEntry.MANGA_ID_COLUMN+" = ?",new String[]{id},null,null,sortOrder);
                 break;
             }
+            case MANGA_SEARCH: {
+                retCursor = querySearch(db,selection, selectionArgs,sortOrder);
+                break;
+            }
             case GENRE: {
                 retCursor = db.query(GenreEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
@@ -324,6 +340,117 @@ public class Provider extends ContentProvider{
         return retCursor;
     }
 
+    private Cursor querySearch(SQLiteDatabase db,String selection, String[] selectionArgs, String sortOrder) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String value = sp.getString(Const.SP_SEARCH_KEY, null);
+        String query;
+        List<String> args = new ArrayList<>();
+        if (value!=null && !"".equals(value.trim())) {
+            String[] parts = value.split(",");
+            List<String> genres = new ArrayList<>();
+            List<String> themes = new ArrayList<>();
+            List<String> other = new ArrayList<>();
+            String genrePrefix = getContext().getString(R.string.genre_search_prefix);
+            String themePrefix = getContext().getString(R.string.theme_search_prefix);
+            String genresSet = null;
+            String themesSet = null;
+            String titlesSet = null;
+            for (String s : parts) {
+                s = s.trim();
+                if (s.startsWith(genrePrefix)) {
+                    s = s.replace(genrePrefix, "").trim();
+                    if (!s.equals("")) {
+                        genres.add(s);
+                        genresSet = (genresSet == null) ? "?" : genresSet + ", ?";
+                    }
+                } else if (s.startsWith(themePrefix)) {
+                    s = s.replace(themePrefix, "").trim();
+                    if (!s.equals("")) {
+                        themes.add(s);
+                        themesSet = (themesSet == null) ? "?" : themesSet + ", ?";
+                    }
+                } else {
+                    s = s.trim();
+                    if (!s.equals("")) {
+                        other.add("%"+s+"%");
+                        titlesSet = (titlesSet == null) ? "mt." + Contract.MangaTitleEntry.NAME_COLUMN + " LIKE ?" : titlesSet + " AND mt." + Contract.MangaTitleEntry.NAME_COLUMN + " LIKE ?";
+                    }
+                }
+            }
+
+            if (genres.size() > 0) {
+                args.addAll(genres);
+                args.add("" + genres.size());
+            }
+            String genresSubQuery = (genres.size() == 0) ? null : "(select mg.manga_id  from manga_genres mg left join genres g on mg.genre_id = g._id where g.genre in (" +
+                    genresSet + ") group by mg.manga_id having count(*) = CAST(? AS INTEGER)) gq";
+
+            if (themes.size() > 0) {
+                args.addAll(themes);
+                args.add("" + themes.size());
+            }
+            String themesSubQuery = (themes.size() == 0) ? null : "(select mt.manga_id from manga_themes mt left join themes t on mt.theme_id = t._id where t.theme in (" +
+                    themesSet + ") group by mt.manga_id having count(*) = CAST(? AS INTEGER)) tq";
+
+            if (other.size() > 0) {
+                args.addAll(other);
+            }
+
+            String titlesSubQuery = (other.size() == 0) ? null : "(select distinct mt.manga_id from manga_titles mt where " + titlesSet + ") nq";
+
+
+            List<String> fromList = new ArrayList<>();
+            List<String> whereList = new ArrayList<>();
+            String projection = null;
+            if (genresSubQuery != null) {
+                fromList.add(genresSubQuery);
+                whereList.add("gq." + Contract.MangaGenreEntry.MANGA_ID_COLUMN);
+                projection = (projection==null)?" gq."+ Contract.MangaGenreEntry.MANGA_ID_COLUMN: projection;
+            }
+            if (themesSubQuery != null) {
+                fromList.add(themesSubQuery);
+                whereList.add("tq." + Contract.MangaThemeEntry.MANGA_ID_COLUMN);
+                projection = (projection==null)?" tq."+ Contract.MangaThemeEntry.MANGA_ID_COLUMN: projection;
+            }
+            if (titlesSubQuery != null) {
+                fromList.add(titlesSubQuery);
+                whereList.add("nq." + Contract.MangaTitleEntry.MANGA_ID_COLUMN);
+                projection = (projection==null)?" nq."+ Contract.MangaTitleEntry.MANGA_ID_COLUMN: projection;
+            }
+
+            String from = null;
+
+            for (String f : fromList) {
+                from = (from == null) ? f : from + " , " + f;
+            }
+
+            from = " FROM " + from;
+
+            String where = "";
+            if (whereList.size() == 3) {
+                where = " WHERE " + whereList.get(0) + " = " + whereList.get(1) + " AND " + whereList.get(1) + " = " + whereList.get(2);
+            } else if (whereList.size() == 2) {
+                where = " WHERE " + whereList.get(0) + " = " + whereList.get(1);
+            }
+
+            query = "SELECT * FROM " + MangaEntry.TABLE_NAME + " WHERE " + MangaEntry._ID + " IN (SELECT "+projection +" " + from +" " + where + ")";
+
+            if (selection != null && !"".equals(selection)) {
+                query += " AND " + selection;
+                args.addAll(Arrays.asList(selectionArgs));
+            }
+            if (sortOrder!=null && !"".equals(sortOrder)){
+                query+= " ORDER BY "+sortOrder;
+            }
+            String[] queryArgs = new String[args.size()];
+            queryArgs = args.toArray(queryArgs);
+            return db.rawQuery(query,queryArgs);
+        }else{
+            return db.query(MangaEntry.TABLE_NAME,null,selection, selectionArgs,null,null,sortOrder);
+        }
+
+    }
+
     @Nullable
     @Override
     public String getType(Uri uri) {
@@ -333,6 +460,8 @@ public class Provider extends ContentProvider{
             case MANGA_WITH_ID:
                 return MangaEntry.CONTENT_ITEM_TYPE;
             case MANGA_RELATED_FOR_MANGA:
+                return MangaEntry.CONTENT_DIR_TYPE;
+            case MANGA_SEARCH:
                 return MangaEntry.CONTENT_DIR_TYPE;
             case GENRE:
                 return GenreEntry.CONTENT_DIR_TYPE;

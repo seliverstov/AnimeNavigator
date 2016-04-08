@@ -33,6 +33,6 @@
     <string name="ANN_URL">http://www.animenewsnetwork.com/encyclopedia/anime.php?id=%s</string>
     <string name="no_related">No related</string>
     <string name="anime_and_manga"><![CDATA[Anime & Manga]]></string>
-    <string name="genre_search_prefix">Genre:</string>
-    <string name="theme_search_prefix">Theme:</string>
+    <string name="genre_search_prefix">Genres:</string>
+    <string name="theme_search_prefix">Themes:</string>
 </resources>

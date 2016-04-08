@@ -31,6 +31,8 @@ public class Contract {
 
     public static final String PATH_REVIEW = "review";
 
+    public static final String PATH_SEARCH = "search";
+
     public static final class MangaEntry implements BaseColumns{
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MANGA).build();
         public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MANGA;
@@ -53,6 +55,10 @@ public class Contract {
 
         public static Uri buildRelatedForManga(long mangaId) {
             return CONTENT_URI.buildUpon().appendPath(PATH_RELATED).appendPath(String.valueOf(mangaId)).build();
+        }
+
+        public static Uri buildSearch() {
+            return CONTENT_URI.buildUpon().appendPath(PATH_SEARCH).build();
         }
     }
 
