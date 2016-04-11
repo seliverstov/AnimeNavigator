@@ -74,11 +74,7 @@ public class SearchFragment extends AnimeListFragment {
         mSearchView.setText(sp.getString(Const.SP_SEARCH_KEY,null));
 
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(getActivity(), simple_dropdown_item_1line);
-<<<<<<< HEAD
         Cursor genresCursor  = getContext().getContentResolver().query(Contract.GenreEntry.CONTENT_URI, null, null, null, Contract.GenreEntry.NAME_COLUMN);
-=======
-        Cursor genresCursor  = getContext().getContentResolver().query(Contract.GenreEntry.CONTENT_URI, null, null, null, null);
->>>>>>> 0638128dedd3995f159677ae6140e7f86b04cef4
         if (genresCursor!=null){
             for(String s:Anime.genresFromCursor(genresCursor)){
                 searchAdapter.add(getContext().getString(R.string.genres_tmp,s));
@@ -86,11 +82,7 @@ public class SearchFragment extends AnimeListFragment {
             genresCursor.close();
         }
 
-<<<<<<< HEAD
         Cursor themesCursor  = getContext().getContentResolver().query(Contract.ThemeEntry.CONTENT_URI, null, null, null, Contract.ThemeEntry.NAME_COLUMN);
-=======
-        Cursor themesCursor  = getContext().getContentResolver().query(Contract.ThemeEntry.CONTENT_URI, null, null, null, null);
->>>>>>> 0638128dedd3995f159677ae6140e7f86b04cef4
         if (themesCursor!=null){
             for(String s:Anime.themesFromCursor(themesCursor)){
                 searchAdapter.add(getContext().getString(R.string.themes_tmp,s));

@@ -89,17 +89,9 @@ public class SummaryFragment extends Fragment{
 
                 final TextView titles = (TextView) mView.findViewById(R.id.titles);
                 if (titles != null) {
-<<<<<<< HEAD
                     Cursor titlesCursor = mContext.getContentResolver().query(Contract.MangaTitleEntry.buildTitlesForManga((long) anime._id), null, null, null, Contract.MangaTitleEntry.NAME_COLUMN);
                     if (titlesCursor != null) {
                         titles.setText(Anime.titlesFromCursorAsString(titlesCursor));
-=======
-                    Cursor titlesCursor = mContext.getContentResolver().query(Contract.MangaTitleEntry.buildTitlesForManga((long) anime._id), null, null, null, null);
-                    if (titlesCursor != null) {
-                        String s = Anime.titlesFromCursorAsString(titlesCursor);
-                        s = anime.title+", "+s;
-                        titles.setText(s);
->>>>>>> 0638128dedd3995f159677ae6140e7f86b04cef4
                         titlesCursor.close();
                     }
                 }
@@ -127,11 +119,7 @@ public class SummaryFragment extends Fragment{
                 }
                 final TextView creators = (TextView) mView.findViewById(R.id.creators);
                 if (creators != null) {
-<<<<<<< HEAD
                     Cursor creatorsCursor = mContext.getContentResolver().query(Contract.PersonEntry.buildPersonsAndTasksForManga((long) anime._id), null, null, null, Contract.TaskEntry.NAME_COLUMN);
-=======
-                    Cursor creatorsCursor = mContext.getContentResolver().query(Contract.PersonEntry.buildPersonsAndTasksForManga((long) anime._id), null, null, null, null);
->>>>>>> 0638128dedd3995f159677ae6140e7f86b04cef4
                     if (creatorsCursor != null) {
                         String s = Anime.creatorsAndTasksFromCursorAsHtml(creatorsCursor);
                         s = (s==null || "".equals(s))? mContext.getString(R.string.unknown) : s;

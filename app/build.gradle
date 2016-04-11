@@ -29,5 +29,5 @@ dependencies {
     compile 'com.android.support:palette-v7:23.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 }
