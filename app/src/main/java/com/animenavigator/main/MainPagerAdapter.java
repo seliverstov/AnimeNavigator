@@ -15,6 +15,10 @@ import com.animenavigator.main.SearchFragment;
  * Created by alexander on 19.03.2016.
  */
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
+    public static final int TOP_RATED_TAB = 0;
+    public static final int SEARCH_TAB = 1;
+    public static final int NEW_TAB = 2;
+
     private Context mContext;
     public MainPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -24,9 +28,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch(position){
-            case 0 : return GridFragment.newInstance(position);
-            case 1 : return SearchFragment.newInstance(position);
-            case 2 : return ListFragment.newInstance(position);
+            case TOP_RATED_TAB : return GridFragment.newInstance(position);
+            case SEARCH_TAB : return SearchFragment.newInstance(position);
+            case NEW_TAB : return ListFragment.newInstance(position);
             default: return PageFragment.newInstance(position);
         }
     }
@@ -39,9 +43,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position){
-            case 0: return mContext.getString(R.string.tab1);
-            case 1: return mContext.getString(R.string.tab2);
-            case 2: return mContext.getString(R.string.tab3);
+            case TOP_RATED_TAB: return mContext.getString(R.string.tab1);
+            case SEARCH_TAB: return mContext.getString(R.string.tab2);
+            case NEW_TAB: return mContext.getString(R.string.tab3);
             default: return "Tab "+position;
         }
     }

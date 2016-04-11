@@ -15,21 +15,31 @@ import com.animenavigator.R;
  * Created by a.g.seliverstov on 29.03.2016.
  */
 public class MainFragment extends Fragment{
+
+    private ViewPager mViewPager;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.main_fragment,container,false);
         MainPagerAdapter adapter = new MainPagerAdapter(getActivity().getSupportFragmentManager(),getActivity());
 
-        ViewPager viewPager = (ViewPager)view.findViewById(R.id.main_viewpager);
-        if (viewPager!=null) {
-            viewPager.setAdapter(adapter);
-
+        mViewPager = (ViewPager)view.findViewById(R.id.main_viewpager);
+        if (mViewPager !=null) {
+            mViewPager.setAdapter(adapter);
         }
 
         TabLayout tabLayout = (TabLayout)view.findViewById(R.id.main_tablayout);
-        if (tabLayout!=null)
-            tabLayout.setupWithViewPager(viewPager);
+        if (tabLayout !=null)
+            tabLayout.setupWithViewPager(mViewPager);
         return view;
+    }
+
+    public void setCurrentTab(int tab){
+        mViewPager.setCurrentItem(tab);
+    }
+
+    public int getCurrentTab(){
+        return mViewPager.getCurrentItem();
     }
 }

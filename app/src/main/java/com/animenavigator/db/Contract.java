@@ -218,4 +218,21 @@ public class Contract {
         }
     }
 
+    public static final class MangaNewsEntry implements BaseColumns {
+        public static final String TABLE_NAME = "manga_news";
+
+        public static final String MANGA_ID_COLUMN = "manga_id";
+        public static final String NAME_COLUMN = "news";
+        public static final String HREF_COLUMN = "href";
+        public static final String DATE_COLUMN = "date";
+    }
+
+    public static final class MangaMusicEntry implements BaseColumns {
+        public static final String TABLE_NAME = "manga_music";
+
+        public static final String MANGA_ID_COLUMN = "manga_id";
+        public static final String NAME_COLUMN = "music";
+        public static final String TYPE_COLUMN = "type";
+    }
+
 }

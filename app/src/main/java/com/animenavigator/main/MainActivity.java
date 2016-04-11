@@ -21,12 +21,14 @@ import com.animenavigator.details.DetailsActivity;
 import com.animenavigator.details.DetailsFragment;
 import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
+import com.animenavigator.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements ItemSelectedCallback {
     private static final String DETAILS_FRAGMENT_TAG = "DETAILS_FRAGMENT_TAG";
     private DrawerLayout mDrawerLayout;
     private boolean mTwoPane;
 
+    public static final String EXTRA_START_TAB = "EXTRA_START_TAB";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
             mTwoPane = false;
         }
 
+        SyncAdapter.initializeSyncAdapter(this);
+
     }
 
     @Override
@@ -116,6 +120,17 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
             Intent intent = new Intent(this, DetailsActivity.class);
             intent.setData(ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
             startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getExtras()!=null && intent.getExtras().containsKey(EXTRA_START_TAB)) {
+            MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+            if (fragment != null) {
+                fragment.setCurrentTab(intent.getIntExtra(EXTRA_START_TAB, fragment.getCurrentTab()));
+            }
         }
     }
 }

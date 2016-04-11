@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class ImageLoader {
     private static final int READ_TIMEOUT = 60;
     private static final int CONNECT_TIMEOUT = 60;
-    private static final boolean BYPASS_CLOUDFLARE = true;
+
 
     private static Picasso initPicasso(Context context){
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -30,7 +30,7 @@ public class ImageLoader {
     }
 
     private static String processUrl(String url){
-        return (BYPASS_CLOUDFLARE)? CloudFlare.bypass(url):url;
+        return (CloudFlare.BYPASS_CLOUDFLARE)? CloudFlare.bypass(url):url;
     }
 
     public static void loadImageToView(final String url, final Context context, final ImageView imageView){

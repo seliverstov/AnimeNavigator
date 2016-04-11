@@ -7,6 +7,7 @@ import java.net.URL;
  * Created by a.g.seliverstov on 01.04.2016.
  */
 public class CloudFlare {
+    public static final boolean BYPASS_CLOUDFLARE = false;
     public static final String HOST = "cherry-pudding-87894.herokuapp.com";
 
     public static String bypass(String originUrl) {

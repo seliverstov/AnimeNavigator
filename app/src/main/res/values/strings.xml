@@ -21,7 +21,6 @@
     <string name="related">Related</string>
     <string name="extra">Extra</string>
     <string name="no_details">Select something from list to see details</string>
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consequat augue vitae nunc dapibus convallis. Integer commodo orci sed augue aliquet consequat. Nulla in tristique dui, sit amet posuere lectus. Donec vulputate non ex ac elementum. Pellentesque bibendum nisl velit, nec lobortis velit accumsan id. Morbi rhoncus mattis turpis id dignissim. Sed eget enim semper sem ultrices sagittis at convallis metus. Sed sed purus nisl. Duis semper lorem sit amet sapien molestie scelerisque. Donec et felis sapien. Vivamus vitae dapibus urna. Vivamus sapien dolor, sagittis at pharetra quis, ullamcorper id urna. Vestibulum in tempor libero. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</string>
     <string name="unknown">unknown</string>
     <string name="reviews">Reviews</string>
     <string name="no_reviews">No reviews</string>
@@ -29,11 +28,15 @@
     <string name="no_links">No links</string>
     <string name="episodes">Episodes</string>
     <string name="no_episodes">No episodes</string>
-    <string name="ANN">www.animenewsnetwork.com</string>
-    <string name="ANN_URL">http://www.animenewsnetwork.com/encyclopedia/anime.php?id=%s</string>
+    <string name="ANN" translatable="false">www.animenewsnetwork.com</string>
+    <string name="ANN_URL" translatable="false">http://www.animenewsnetwork.com/encyclopedia/anime.php?id=%s</string>
     <string name="no_related">No related</string>
     <string name="anime_and_manga"><![CDATA[Anime & Manga]]></string>
     <string name="genre_search_prefix">Genres:</string>
     <string name="theme_search_prefix">Themes:</string>
     <string name="loading">Loading</string>
+    <string name="content_authority" translatable="false">com.animenavigator.provider</string>
+    <string name="account_type" translatable="false">animenavigator.com</string>
+    <string name="notification_title">New titles available</string>
+    <string name="notification_text_tmp">%s new titles was loaded</string>
 </resources>

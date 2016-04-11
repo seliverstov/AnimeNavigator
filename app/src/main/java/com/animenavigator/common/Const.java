@@ -8,4 +8,6 @@ public class Const {
     public static final String SP_ANIME_TYPE = "anime";
     public static final String SP_MANGA_TYPE = "manga";
     public static final String SP_SEARCH_KEY = "SEARCH";
+    public static final String SP_ENABLE_NOTIFICATIONS_KEY = "ENABLE_NOTIFICATIONS";
+    public static final String SP_LAST_SINC = "LAST_SYNC";
 }

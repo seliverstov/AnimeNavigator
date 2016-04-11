@@ -21,7 +21,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:text="@string/lorem_ipsum"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
