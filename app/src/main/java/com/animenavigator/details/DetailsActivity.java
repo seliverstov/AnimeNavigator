@@ -2,10 +2,14 @@ package com.animenavigator.details;
 
 import android.content.ContentUris;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 
 import com.animenavigator.R;
@@ -41,6 +45,9 @@ public class DetailsActivity extends AppCompatActivity implements ItemSelectedCa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -49,8 +56,18 @@ public class DetailsActivity extends AppCompatActivity implements ItemSelectedCa
 
     @Override
     public void onItemSelected(int id) {
+        onItemSelected(id, null);
+    }
+
+    @Override
+    public void onItemSelected(int id, View view) {
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.setData(ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
-        startActivity(intent);
+        if (view!=null && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view.findViewById(R.id.item_poster), getString(R.string.poster_transition));
+            ActivityCompat.startActivity(this, intent, options.toBundle());
+        }else {
+            startActivity(intent);
+        }
     }
 }

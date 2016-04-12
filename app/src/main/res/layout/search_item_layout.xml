@@ -12,7 +12,8 @@
             android:id="@+id/item_poster"
             android:layout_width="@dimen/poster_small_width"
             android:layout_height="@dimen/poster_small_height"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

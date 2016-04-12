@@ -104,7 +104,7 @@ public class AnimeItemAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder>
                 @Override
                 public void onClick(View v) {
                     if (mContext instanceof ItemSelectedCallback) {
-                        ((ItemSelectedCallback) mContext).onItemSelected(anime._id);
+                        ((ItemSelectedCallback) mContext).onItemSelected(anime._id, holder.mPoster);
                     }
                 }
             });

@@ -3,8 +3,11 @@ package com.animenavigator.main;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.animenavigator.common.Const;
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
     }
 
     @Override
-    public void onItemSelected(int id) {
+    public void onItemSelected(int id, View view) {
         if (mTwoPane){
             Bundle args = new Bundle();
             args.putParcelable(DetailsFragment.MANGA_URI_KEY, ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
@@ -120,10 +124,19 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
         }else {
             Intent intent = new Intent(this, DetailsActivity.class);
             intent.setData(ContentUris.withAppendedId(Contract.MangaEntry.CONTENT_URI, id));
-            startActivity(intent);
+            if (view!=null && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view.findViewById(R.id.item_poster), getString(R.string.poster_transition));
+                ActivityCompat.startActivity(this, intent, options.toBundle());
+            }else {
+                startActivity(intent);
+            }
         }
     }
 
+    @Override
+    public void onItemSelected(int id) {
+        onItemSelected(id, null);
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

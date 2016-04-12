@@ -36,7 +36,8 @@
                     android:layout_width="@dimen/poster_width"
                     android:layout_height="@dimen/poster_height"
                     android:scaleType="centerCrop"
-                    android:layout_gravity="top|start"/>
+                    android:layout_gravity="top|start"
+                    style="@style/PosterTransition"/>
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
