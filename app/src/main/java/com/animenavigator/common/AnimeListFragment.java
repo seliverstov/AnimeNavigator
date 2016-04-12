@@ -42,24 +42,35 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(Const.SP_ANIME_TYPE_KEY)){
+        if (key.equals(Const.SP_ANIME_TYPE_KEY) || key.equals(Const.SP_FAVORITE_KEY) || (key.equals(Const.SP_FAVORITE_LIST_KEY) && sharedPreferences.getBoolean(Const.SP_FAVORITE_KEY, false))){
             restartLoader();
         }
     }
 
     protected void refeshSelection(Context context){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String value = sp.getString(Const.SP_ANIME_TYPE_KEY, null);
 
-        if (Const.SP_MANGA_TYPE.equals(value)){
-            mSelection = Contract.MangaEntry.TYPE_COLUMN+" = ?";
-            mSelectionArgs = new String[]{Const.SP_MANGA_TYPE};
-        }else if (Const.SP_ANIME_TYPE.equals(value)){
-            mSelection = Contract.MangaEntry.TYPE_COLUMN+" != ?";
-            mSelectionArgs = new String[]{Const.SP_MANGA_TYPE};
+        if (sp.getBoolean(Const.SP_FAVORITE_KEY, false)){
+            String[] args = sp.getString(Const.SP_FAVORITE_LIST_KEY,"-1").split(",");
+            String list = "";
+            for(String s: args){
+                list +="?,";
+            }
+            if (list.length()>0) list = list.substring(0,list.length()-1);
+            mSelection = Contract.MangaEntry._ID+" IN ("+list+")";
+            mSelectionArgs = args;
         }else{
-            mSelection = null;
-            mSelectionArgs = null;
+            String value = sp.getString(Const.SP_ANIME_TYPE_KEY, null);
+            if (Const.SP_MANGA_TYPE.equals(value)){
+                mSelection = Contract.MangaEntry.TYPE_COLUMN+" = ?";
+                mSelectionArgs = new String[]{Const.SP_MANGA_TYPE};
+            }else if (Const.SP_ANIME_TYPE.equals(value)){
+                mSelection = Contract.MangaEntry.TYPE_COLUMN+" != ?";
+                mSelectionArgs = new String[]{Const.SP_MANGA_TYPE};
+            }else{
+                mSelection = null;
+                mSelectionArgs = null;
+            }
         }
     }
 
@@ -78,14 +89,16 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             refeshSelection(mContext);
-            Uri uri = getArguments().getParcelable(ARG_LOADER_URI);
+            Uri uri = (getArguments()!=null)?(Uri)getArguments().getParcelable(ARG_LOADER_URI):null;
+            uri = (uri==null)?Contract.MangaEntry.CONTENT_URI:uri;
+            String sortOrder = (getArguments()!=null)?getArguments().getString(ARG_SORT_ORDER):null;
             return new CursorLoader(
                     mContext,
-                    (uri==null)?Contract.MangaEntry.CONTENT_URI:uri,
+                    uri,
                     null,
                     mSelection,
                     mSelectionArgs,
-                    getArguments().getString(ARG_SORT_ORDER));
+                    sortOrder);
         }
 
         @Override

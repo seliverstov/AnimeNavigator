@@ -106,4 +106,13 @@
         android:layout_marginRight="@dimen/land_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/favorite"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:elevation="8dp"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:clickable="true"/>
 </android.support.design.widget.CoordinatorLayout>

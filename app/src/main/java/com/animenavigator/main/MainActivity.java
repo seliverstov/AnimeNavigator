@@ -59,13 +59,16 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
                     item.setChecked(true);
                     switch (item.getItemId()) {
                         case R.id.anime_and_manga:
-                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, null).apply();
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, null).putBoolean(Const.SP_FAVORITE_KEY, false).apply();
                             break;
                         case R.id.anime:
-                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, Const.SP_ANIME_TYPE).apply();
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, Const.SP_ANIME_TYPE).putBoolean(Const.SP_FAVORITE_KEY, false).apply();
                             break;
                         case R.id.manga:
-                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, Const.SP_MANGA_TYPE).apply();
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, Const.SP_MANGA_TYPE).putBoolean(Const.SP_FAVORITE_KEY, false).apply();
+                            break;
+                        case R.id.favorite:
+                            sp.edit().putString(Const.SP_ANIME_TYPE_KEY, null).putBoolean(Const.SP_FAVORITE_KEY, true).apply();
                             break;
                         default:
                             Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -76,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
             });
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
             String type = sp.getString(Const.SP_ANIME_TYPE_KEY,null);
-            if (Const.SP_ANIME_TYPE.equals(type)) navigationView.setCheckedItem(R.id.anime);
+            if (sp.getBoolean(Const.SP_FAVORITE_KEY,false)) navigationView.setCheckedItem(R.id.favorite);
+            else if (Const.SP_ANIME_TYPE.equals(type)) navigationView.setCheckedItem(R.id.anime);
             else if (Const.SP_MANGA_TYPE.equals(type)) navigationView.setCheckedItem(R.id.manga);
             else navigationView.setCheckedItem(R.id.anime_and_manga);
         }

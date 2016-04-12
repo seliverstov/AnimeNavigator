@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -57,6 +58,10 @@ import com.squareup.picasso.Target;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by a.g.seliverstov on 29.03.2016.
@@ -212,6 +217,34 @@ public class DetailsFragment extends Fragment {
 
                 final LinearLayout header = (LinearLayout) mView.findViewById(R.id.header);
 
+                final FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.favorite);
+
+                if (fab!=null) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    List<String> favoriteList = new ArrayList<>(Arrays.asList(sp.getString(Const.SP_FAVORITE_LIST_KEY, "").split(",")));
+                    if (!favoriteList.contains(String.valueOf(anime._id))) {
+                        fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_off));
+                    } else {
+                        fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_on));
+                    }
+
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            List<String> favoriteList = new ArrayList<>(Arrays.asList(sp.getString(Const.SP_FAVORITE_LIST_KEY, "").split(",")));
+                            if (favoriteList.contains(String.valueOf(anime._id))){
+                                fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_off));
+                                favoriteList.remove(String.valueOf(anime._id));
+                                sp.edit().putString(Const.SP_FAVORITE_LIST_KEY,getFavoriteString(favoriteList)).apply();
+                            }else{
+                                fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_on));
+                                favoriteList.add(String.valueOf(anime._id));
+                                sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
+                            }
+                        }
+                    });
+                }
 
                 Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
                 DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(), getActivity(), uri);
@@ -330,5 +363,15 @@ public class DetailsFragment extends Fragment {
         }else{
             shareScreenShot();
         }
+    }
+
+    protected String getFavoriteString(List<String> list){
+        StringBuilder sb = new StringBuilder();
+        for(String s:list){
+            sb.append(s);
+            sb.append(",");
+        }
+        String result =  sb.toString();
+        return (result.length()>0)?result.substring(0,result.length()-1):result;
     }
 }

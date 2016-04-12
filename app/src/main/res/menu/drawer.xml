@@ -4,20 +4,26 @@
         <item
             android:id="@+id/anime_and_manga"
             android:checked="true"
-            android:icon="@android:drawable/btn_star_big_on"
+            android:icon="@drawable/ic_grade_black_18dp"
             android:title="@string/anime_and_manga"
             />
         <item
             android:id="@+id/anime"
             android:checked="true"
-            android:icon="@android:drawable/btn_star_big_on"
+            android:icon="@drawable/ic_theaters_black_18dp"
             android:title="@string/anime"
             />
         <item
             android:id="@+id/manga"
             android:checked="true"
-            android:icon="@android:drawable/btn_star_big_on"
+            android:icon="@drawable/ic_book_black_18dp"
             android:title="@string/manga"
+            />
+        <item
+            android:id="@+id/favorite"
+            android:checked="true"
+            android:icon="@drawable/ic_favorite_border_black_18dp"
+            android:title="@string/favorite"
             />
     </group>
 
