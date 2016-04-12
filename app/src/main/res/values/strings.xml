@@ -39,4 +39,9 @@
     <string name="account_type" translatable="false">animenavigator.com</string>
     <string name="notification_title">New titles available</string>
     <string name="notification_text_tmp">%s new titles was loaded</string>
+    <string name="action_share">Share</string>
+    <string name="share_title">Share Anime</string>
+    <string name="permission_denied">The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission</string>
+    <string name="permission_remainder">Grant permission to write to your storage if you want to share images</string>
+    <string name="screenshot_file_tmp" translatable="false">screenshot_anime_%s.png</string>
 </resources>
