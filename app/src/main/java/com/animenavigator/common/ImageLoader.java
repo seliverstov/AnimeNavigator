@@ -6,12 +6,16 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.animenavigator.utils.CloudFlare;
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Response;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,6 +30,15 @@ public class ImageLoader {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS);
+        okHttpClient.networkInterceptors().add(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Response originalResponse = chain.proceed(chain.request());
+                return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (60 * 60 * 24 * 365)).build();
+            }
+        });
+
+        okHttpClient.setCache(new Cache(context.getCacheDir(), Integer.MAX_VALUE));
         return new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient)).build();
     }
 
