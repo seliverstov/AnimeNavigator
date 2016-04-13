@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.animenavigator.common.PageFragment;
 import com.animenavigator.R;
 
 /**
@@ -43,7 +42,7 @@ public class DetailsPagerAdapter extends FragmentStatePagerAdapter {
             case 0: return mContext.getString(R.string.summary);
             case 1: return mContext.getString(R.string.related);
             case 2: return mContext.getString(R.string.extra);
-            default: return "Tab "+position;
+            default: return null;
         }
     }
 }
