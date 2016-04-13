@@ -47,4 +47,8 @@
     <string name="poster_transition">poster_transition</string>
     <string name="favorite">Favorite</string>
     <string name="no_favorite">No favorite anime</string>
+    <string name="poster_description">Image of Anime poster or Manga cover</string>
+    <string name="start_description">Image of five-pointed star</string>
+    <string name="clear_btn_description">Clear search query</string>
+    <string name="search_btn_description">Start search</string>
 </resources>

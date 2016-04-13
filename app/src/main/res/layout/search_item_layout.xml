@@ -12,6 +12,7 @@
             android:id="@+id/item_poster"
             android:layout_width="@dimen/poster_small_width"
             android:layout_height="@dimen/poster_small_height"
+            android:contentDescription="@string/poster_description"
             android:scaleType="centerCrop"
             />
         <LinearLayout
@@ -25,6 +26,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_grade_black_18dp"
+                android:contentDescription="@string/start_description"
                 />
             <TextView
                 android:id="@+id/item_rating"

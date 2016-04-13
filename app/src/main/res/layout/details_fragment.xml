@@ -37,6 +37,7 @@
                     android:layout_height="@dimen/poster_height"
                     android:scaleType="centerCrop"
                     android:layout_gravity="top|start"
+                    android:contentDescription="@string/poster_description"
                     style="@style/PosterTransition"/>
                 <LinearLayout
                     android:orientation="vertical"
@@ -69,7 +70,6 @@
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingStart="@dimen/activity_horizontal_margin"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="2016-01-01"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>

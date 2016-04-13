@@ -23,12 +23,13 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_gravity="end|center_vertical"
-                android:src="@drawable/ic_clear_black_24dp"/>
+                android:src="@drawable/ic_clear_black_24dp"
+                android:contentDescription="@string/clear_btn_description"
+                />
             <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
                 android:id="@+id/searchview"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
                 android:layout_gravity="start|center_vertical"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
@@ -44,7 +45,9 @@
                 android:layout_marginEnd="4dp"
                 android:background="@android:color/transparent"
                 android:layout_gravity="end|center_vertical"
-                android:src="@drawable/ic_search_black_24dp"/>
+                android:src="@drawable/ic_search_black_24dp"
+                android:contentDescription="@string/search_btn_description"
+                />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
