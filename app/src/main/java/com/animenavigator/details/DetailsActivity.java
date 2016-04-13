@@ -21,6 +21,7 @@ import com.animenavigator.db.Contract;
  */
 public class DetailsActivity extends AppCompatActivity implements ItemSelectedCallback {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

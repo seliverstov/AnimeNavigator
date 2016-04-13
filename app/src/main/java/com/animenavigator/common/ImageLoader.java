@@ -3,6 +3,7 @@ package com.animenavigator.common;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.animenavigator.utils.CloudFlare;
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
  * Created by a.g.seliverstov on 01.04.2016.
  */
 public class ImageLoader {
+    private static final String TAG = ImageLoader.class.getSimpleName();
+
     private static final int READ_TIMEOUT = 60;
     private static final int CONNECT_TIMEOUT = 60;
 
@@ -39,7 +42,7 @@ public class ImageLoader {
         });
 
         okHttpClient.setCache(new Cache(context.getCacheDir(), Integer.MAX_VALUE));
-        return new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient)).build();
+        return new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient)).loggingEnabled(true).build();
     }
 
     private static String processUrl(String url){
@@ -77,5 +80,15 @@ public class ImageLoader {
                 target.onPrepareLoad(placeHolderDrawable);
             }
         });
+    }
+
+    public static Bitmap getBitmap(final String url, final Context context){
+        Bitmap bitmap = null;
+        try {
+            bitmap = initPicasso(context).load(url).get();
+        }catch(Exception e){
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return bitmap;
     }
 }

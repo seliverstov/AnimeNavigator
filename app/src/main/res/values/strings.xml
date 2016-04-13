@@ -46,4 +46,5 @@
     <string name="screenshot_file_tmp" translatable="false">screenshot_anime_%s.png</string>
     <string name="poster_transition">poster_transition</string>
     <string name="favorite">Favorite</string>
+    <string name="no_favorite">No favorite anime</string>
 </resources>

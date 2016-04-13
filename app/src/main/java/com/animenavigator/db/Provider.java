@@ -32,6 +32,7 @@ public class Provider extends ContentProvider{
     static final int MANGA_WITH_ID = 101;
     static final int MANGA_RELATED_FOR_MANGA = 102;
     static final int MANGA_SEARCH = 103;
+    static final int MANGA_FAVORITE = 104;
 
     static final int GENRE = 200;
     static final int GENRE_WITH_ID = 201;
@@ -69,6 +70,7 @@ public class Provider extends ContentProvider{
         sUriMatcher.addURI(authority, PATH_MANGA+"/#", MANGA_WITH_ID);
         sUriMatcher.addURI(authority, PATH_MANGA+"/"+PATH_RELATED+"/#", MANGA_RELATED_FOR_MANGA);
         sUriMatcher.addURI(authority, PATH_MANGA+"/"+PATH_SEARCH, MANGA_SEARCH);
+        sUriMatcher.addURI(authority, PATH_MANGA+"/"+PATH_FAVORITE, MANGA_FAVORITE);
 
         sUriMatcher.addURI(authority, PATH_GENRE, GENRE);
         sUriMatcher.addURI(authority, PATH_GENRE+"/#", GENRE_WITH_ID);
@@ -219,6 +221,17 @@ public class Provider extends ContentProvider{
             }
             case MANGA_SEARCH: {
                 retCursor = querySearch(db,selection, selectionArgs,sortOrder);
+                break;
+            }
+            case MANGA_FAVORITE: {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String[] args = sp.getString(Const.SP_FAVORITE_LIST_KEY,"-1").split(",");
+                String list = "";
+                for(String s: args){
+                    list +="?,";
+                }
+                if (list.length()>0) list = list.substring(0,list.length()-1);
+                retCursor = db.query(MangaEntry.TABLE_NAME,projection, Contract.MangaEntry._ID+" IN ("+list+")", args, null, null, sortOrder);
                 break;
             }
             case GENRE: {
@@ -462,6 +475,8 @@ public class Provider extends ContentProvider{
             case MANGA_RELATED_FOR_MANGA:
                 return MangaEntry.CONTENT_DIR_TYPE;
             case MANGA_SEARCH:
+                return MangaEntry.CONTENT_DIR_TYPE;
+            case MANGA_FAVORITE:
                 return MangaEntry.CONTENT_DIR_TYPE;
             case GENRE:
                 return GenreEntry.CONTENT_DIR_TYPE;

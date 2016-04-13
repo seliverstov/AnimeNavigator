@@ -2,6 +2,8 @@ package com.animenavigator.details;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +54,7 @@ import com.animenavigator.main.MainActivity;
 import com.animenavigator.main.MainPagerAdapter;
 import com.animenavigator.model.Anime;
 import com.animenavigator.utils.ScreenShotUtils;
+import com.animenavigator.widget.FavoriteWidgetProvide;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -242,6 +245,10 @@ public class DetailsFragment extends Fragment {
                                 favoriteList.add(String.valueOf(anime._id));
                                 sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
                             }
+                            getContext().getContentResolver().notifyChange(Contract.MangaEntry.buildFavorite(), null);
+                            Intent widgetUpdateIntent = new Intent();
+                            widgetUpdateIntent.setAction(Const.ACTION_FAVORITE_UPDATED);
+                            getContext().sendBroadcast(widgetUpdateIntent);
                         }
                     });
                 }

@@ -13,4 +13,6 @@ public class Const {
     public static final String SP_WRITE_EXTERNAL_STORAGE_KEY = "WRITE_EXTERNAL_STORAGE";
     public static final String SP_FAVORITE_LIST_KEY = "FAVORITE_LIST";
     public static final String SP_FAVORITE_KEY = "FAVORITE";
+
+    public static final String ACTION_FAVORITE_UPDATED = "com.animenavigator.ACTION_FAVORITE_UPDATED";
 }
