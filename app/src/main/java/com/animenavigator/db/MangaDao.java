@@ -1,7 +1,5 @@
 package com.animenavigator.db;
 
-import android.content.ContentProviderClient;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteOpenHelper;

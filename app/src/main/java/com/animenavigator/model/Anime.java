@@ -5,7 +5,6 @@ import android.database.Cursor;
 import static com.animenavigator.db.Contract.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +83,7 @@ public class Anime {
     }
 
     public static String creatorsAndTasksFromCursorAsHtml(Cursor c){
-        Map<String,String> tasks = new HashMap<String,String>();
+        Map<String,String> tasks = new HashMap<>();
         while (c.moveToNext()){
             String persons = tasks.get(c.getString(c.getColumnIndex(TaskEntry.NAME_COLUMN)));
             persons = (persons==null)?c.getString(c.getColumnIndex(PersonEntry.NAME_COLUMN)):persons+", "+c.getString(c.getColumnIndex(PersonEntry.NAME_COLUMN));

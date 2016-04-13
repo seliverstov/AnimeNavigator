@@ -9,8 +9,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 
 /**
  * Created by a.g.seliverstov on 11.04.2016.

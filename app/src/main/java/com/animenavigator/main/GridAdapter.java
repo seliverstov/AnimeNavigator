@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import com.animenavigator.common.AnimeViewHolder;
 import com.animenavigator.common.AnimeItemAdapter;
 import com.animenavigator.R;
-import com.animenavigator.model.Anime;
-
-import java.text.DecimalFormat;
 
 
 /**

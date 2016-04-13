@@ -3,6 +3,7 @@ package com.animenavigator.db;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -11,7 +12,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.animenavigator.R;
 import com.animenavigator.common.Const;
@@ -190,6 +190,7 @@ public class Provider extends ContentProvider{
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db =mDbHelper.getReadableDatabase();
+        Context context = getContext();
         Cursor retCursor;
         switch (sUriMatcher.match(uri)){
             case MANGA: {
@@ -349,7 +350,9 @@ public class Provider extends ContentProvider{
             default:
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }
-        retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+
+        if (context!=null)
+            retCursor.setNotificationUri(context.getContentResolver(),uri);
         return retCursor;
     }
 
@@ -358,13 +361,14 @@ public class Provider extends ContentProvider{
         String value = sp.getString(Const.SP_SEARCH_KEY, null);
         String query;
         List<String> args = new ArrayList<>();
+        Context context = getContext();
         if (value!=null && !"".equals(value.trim())) {
             String[] parts = value.split(",");
             List<String> genres = new ArrayList<>();
             List<String> themes = new ArrayList<>();
             List<String> other = new ArrayList<>();
-            String genrePrefix = getContext().getString(R.string.genre_search_prefix);
-            String themePrefix = getContext().getString(R.string.theme_search_prefix);
+            String genrePrefix = (context!=null)?context.getString(R.string.genre_search_prefix):"";
+            String themePrefix = (context!=null)?context.getString(R.string.theme_search_prefix):"";
             String genresSet = null;
             String themesSet = null;
             String titlesSet = null;
@@ -531,6 +535,7 @@ public class Provider extends ContentProvider{
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        Context context = getContext();
         Uri returnUri;
 
         switch (sUriMatcher.match(uri)){
@@ -562,13 +567,15 @@ public class Provider extends ContentProvider{
                 throw new UnsupportedOperationException("Unsupported uri: "+uri);
         }
 
-        getContext().getContentResolver().notifyChange(uri,null);
+        if (context!=null)
+            context.getContentResolver().notifyChange(uri,null);
         return returnUri;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db =mDbHelper.getWritableDatabase();
+        Context context = getContext();
         int deletedRows;
 
         switch(sUriMatcher.match(uri)){
@@ -589,7 +596,8 @@ public class Provider extends ContentProvider{
         }
 
         if (deletedRows>0){
-            getContext().getContentResolver().notifyChange(uri,null);
+            if (context!=null)
+                context.getContentResolver().notifyChange(uri,null);
         }
         return deletedRows;
     }
@@ -597,6 +605,7 @@ public class Provider extends ContentProvider{
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        Context context = getContext();
         int updatedRows;
 
         switch(sUriMatcher.match(uri)){
@@ -617,7 +626,8 @@ public class Provider extends ContentProvider{
         }
 
         if (updatedRows>0){
-            getContext().getContentResolver().notifyChange(uri,null);
+            if (context!=null)
+                context.getContentResolver().notifyChange(uri,null);
         }
         return updatedRows;
     }

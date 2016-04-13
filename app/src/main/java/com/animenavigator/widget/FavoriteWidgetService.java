@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -16,10 +14,7 @@ import android.widget.RemoteViewsService;
 import com.animenavigator.R;
 import com.animenavigator.common.ImageLoader;
 import com.animenavigator.db.Contract;
-import com.animenavigator.main.MainActivity;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 
 /**
