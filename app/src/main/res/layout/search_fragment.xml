@@ -25,19 +25,25 @@
                 android:layout_gravity="end|center_vertical"
                 android:src="@drawable/ic_clear_black_24dp"
                 android:contentDescription="@string/clear_btn_description"
+                android:nextFocusRight="@+id/searchview"
+                android:nextFocusLeft="@+id/search_btn"
                 />
             <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
-                android:id="@+id/searchview"
-                android:layout_width="fill_parent"
+                android:id="@id/searchview"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:nextFocusRight="@id/search_btn"
+                android:nextFocusLeft="@id/clear_btn"
+                />
             <ImageButton
-                android:id="@+id/search_btn"
+                android:id="@id/search_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:scaleType="centerCrop"
@@ -47,6 +53,8 @@
                 android:layout_gravity="end|center_vertical"
                 android:src="@drawable/ic_search_black_24dp"
                 android:contentDescription="@string/search_btn_description"
+                android:nextFocusLeft="@id/searchview"
+                android:nextFocusRight="@id/clear_btn"
                 />
         </LinearLayout>
     </android.support.v7.widget.CardView>
