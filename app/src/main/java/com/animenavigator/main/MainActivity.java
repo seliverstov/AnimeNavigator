@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
                             sp.edit().putString(Const.SP_ANIME_TYPE_KEY, null).putBoolean(Const.SP_FAVORITE_KEY, true).apply();
                             break;
                         case R.id.settings:
+                            item.setChecked(false);
                             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(intent);
                             break;
