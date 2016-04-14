@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.animenavigator.common.AnimeListFragment;
 import com.animenavigator.common.Const;
@@ -109,7 +110,7 @@ public class SearchFragment extends AnimeListFragment {
                 restartLoader();
             }
         });
-        
+        mEmptyView = (TextView)view.findViewById(R.id.empty_list);
         return view;
     }
 

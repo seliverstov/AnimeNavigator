@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.animenavigator.R;
 import com.animenavigator.common.AnimeListFragment;
@@ -34,6 +35,7 @@ public class ListFragment extends AnimeListFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new ListAdapter(getContext(), null);
         recyclerView.setAdapter(mAdapter);
+        mEmptyView = (TextView)view.findViewById(R.id.empty_list);
         return view;
     }
 

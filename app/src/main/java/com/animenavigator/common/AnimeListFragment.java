@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.View;
+import android.widget.TextView;
 
 import com.animenavigator.R;
 import com.animenavigator.db.Contract;
@@ -24,6 +26,7 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
     protected String mSelection = null;
     protected String[] mSelectionArgs = null;
     protected ProgressDialog progressDialog;
+    protected TextView mEmptyView;
 
     public static final String ARG_LOADER_ID = "ARG_LOADER_ID";
     public static final String ARG_SORT_ORDER = "ARG_SORT_ORDER";
@@ -105,6 +108,8 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             mAdapter.swapCursor(data);
             if (progressDialog!=null && progressDialog.isShowing()) progressDialog.hide();
+            if (mEmptyView!=null) mEmptyView.setVisibility((data==null || data.getCount()==0)? View.VISIBLE:View.GONE);
+
         }
 
         @Override
