@@ -42,7 +42,7 @@ import com.animenavigator.common.ImageLoader;
 import com.animenavigator.R;
 import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
-import com.animenavigator.utils.ScreenShotUtils;
+import com.animenavigator.common.ScreenShotUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 

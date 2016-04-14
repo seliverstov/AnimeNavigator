@@ -1,4 +1,4 @@
-package com.animenavigator.utils;
+package com.animenavigator.common;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -4,9 +4,4 @@
         android:key="@string/pref_enable_notification_key"
         android:title="@string/pref_enable_notification_title"
         android:defaultValue="true"/>
-    <SwitchPreferenceCompat
-        android:key="@string/pref_enable_cloudflare_bypass_key"
-        android:title="@string/pref_enable_cloudflare_bypass_title"
-        android:editable="false"
-        android:defaultValue="false"/>
 </PreferenceScreen>

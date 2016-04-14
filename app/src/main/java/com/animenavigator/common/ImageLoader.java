@@ -1,14 +1,11 @@
 package com.animenavigator.common;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.animenavigator.utils.CloudFlare;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -52,11 +49,6 @@ public class ImageLoader {
         return sPicassoBuilder.build();
     }
 
-    private static String processUrl(String url, Context context){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return (sp.getBoolean(Const.SP_ENABLE_CLOUDFLARE_KEY,false))? CloudFlare.bypass(url):url;
-    }
-
     public static void loadImageToView(final String url, final Context context, final ImageView imageView){
         initPicasso(context).load(url).into(imageView, new Callback() {
             @Override
@@ -66,7 +58,7 @@ public class ImageLoader {
 
             @Override
             public void onError() {
-                initPicasso(context).load(processUrl(url, context)).into(imageView);
+                initPicasso(context).load(url).into(imageView);
             }
         });
     }
@@ -80,7 +72,7 @@ public class ImageLoader {
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                initPicasso(context).load(processUrl(url, context)).into(target);
+                initPicasso(context).load(url).into(target);
             }
 
             @Override

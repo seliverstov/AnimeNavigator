@@ -2,7 +2,6 @@ package com.animenavigator.http;
 
 import android.util.Log;
 
-import com.animenavigator.utils.CloudFlare;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -20,13 +19,9 @@ public class AnimeNewsNetworkClientImpl implements AnimeNewsNetworkClient {
     private String baseUrl;
 
 
-    public AnimeNewsNetworkClientImpl(boolean bypassCloudFlare){
+    public AnimeNewsNetworkClientImpl(){
         client = new OkHttpClient();
-        if (bypassCloudFlare){
-            baseUrl = CloudFlare.bypass(AnimeNewsNetworkClient.BASE_URL);
-        }else{
-            baseUrl = AnimeNewsNetworkClient.BASE_URL;
-        }
+        baseUrl = AnimeNewsNetworkClient.BASE_URL;
     }
 
     @Override

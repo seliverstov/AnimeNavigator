@@ -74,7 +74,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             titlesCount = 200;
         }
 
-        AnimeNewsNetworkClient client = new AnimeNewsNetworkClientImpl(sp.getBoolean(Const.SP_ENABLE_CLOUDFLARE_KEY,false));
+        AnimeNewsNetworkClient client = new AnimeNewsNetworkClientImpl();
         String titlesXml = client.queryTitlesXML(0,titlesCount, null, null);
         if (titlesXml==null){
             Log.e(TAG,"Sync error: titles aml is null");
