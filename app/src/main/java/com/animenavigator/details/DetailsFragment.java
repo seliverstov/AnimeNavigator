@@ -58,7 +58,7 @@ import java.util.List;
 public class DetailsFragment extends Fragment {
     public static final String MANGA_URI_KEY = "MANGA_URI_KEY";
     private static final int REQUEST_WRITE_STORAGE = 100;
-    private int MANGA_CURSOR_LOADER_ID = 4;
+
     private View mView;
     private Uri mMangaUri;
     private String mTitle;
@@ -133,7 +133,12 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(MANGA_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        Loader loader = getLoaderManager().getLoader(Const.MANGA_CURSOR_LOADER_ID);
+        if (loader!=null && loader.isReset()){
+            getLoaderManager().restartLoader(Const.MANGA_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        }else {
+            getLoaderManager().initLoader(Const.MANGA_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        }
     }
 
     @Override

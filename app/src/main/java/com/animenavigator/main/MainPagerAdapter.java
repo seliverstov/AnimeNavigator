@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.animenavigator.R;
+import com.animenavigator.common.Const;
 
 
 /**
@@ -25,9 +26,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch(position){
-            case TOP_RATED_TAB : return GridFragment.newInstance(position);
-            case SEARCH_TAB : return SearchFragment.newInstance(position);
-            case NEW_TAB : return ListFragment.newInstance(position);
+            case TOP_RATED_TAB : return GridFragment.newInstance(Const.TOPRATED_CURSOR_LOADER_ID);
+            case SEARCH_TAB : return SearchFragment.newInstance(Const.SEARCH_CURSOR_LOADER_ID);
+            case NEW_TAB : return ListFragment.newInstance(Const.NEW_CURSOR_LOADER_ID);
             default: return null;
         }
     }

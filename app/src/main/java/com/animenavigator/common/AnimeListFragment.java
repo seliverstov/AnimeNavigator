@@ -40,7 +40,12 @@ public abstract class AnimeListFragment extends Fragment implements SharedPrefer
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getActivity().getString(R.string.loading));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        getLoaderManager().initLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
+        Loader loader = getLoaderManager().getLoader(getArguments().getInt(ARG_LOADER_ID));
+        if (loader!=null && loader.isReset()){
+            getLoaderManager().restartLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
+        }else {
+            getLoaderManager().initLoader(getArguments().getInt(ARG_LOADER_ID), null, new CursorLoaderCallback(getActivity()));
+        }
     }
 
     @Override

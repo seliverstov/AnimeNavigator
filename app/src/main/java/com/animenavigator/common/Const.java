@@ -15,4 +15,13 @@ public class Const {
     public static final String SP_FAVORITE_KEY = "FAVORITE";
 
     public static final String ACTION_FAVORITE_UPDATED = "com.animenavigator.ACTION_FAVORITE_UPDATED";
+
+    public static final int TOPRATED_CURSOR_LOADER_ID = 1;
+    public static final int SEARCH_CURSOR_LOADER_ID = 2;
+    public static final int NEW_CURSOR_LOADER_ID = 3;
+    public static final int MANGA_CURSOR_LOADER_ID = 4;
+    public static final int SUMMARY_CURSOR_LOADER_ID = 5;
+    public static final int RELATED_CURSOR_LOADER_ID = 6;
+    public static final int EXTRA_CURSOR_LOADER_ID = 7;
+
 }

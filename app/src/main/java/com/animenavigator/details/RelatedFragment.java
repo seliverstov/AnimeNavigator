@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.animenavigator.R;
+import com.animenavigator.common.Const;
 import com.animenavigator.common.DividerItemDecoration;
 import com.animenavigator.db.Contract;
 
@@ -26,7 +27,7 @@ import com.animenavigator.db.Contract;
  */
 public class RelatedFragment  extends Fragment{
     public static final String MANGA_URI_KEY = "MANGA_URI_KEY";
-    private int RELATED_CURSOR_LOADER_ID = 6;
+
     private RelatedAdapter mAdapter;
     private TextView mEmptyView;
 
@@ -57,7 +58,12 @@ public class RelatedFragment  extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(RELATED_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        Loader loader = getLoaderManager().getLoader(Const.RELATED_CURSOR_LOADER_ID);
+        if (loader!=null && loader.isReset()){
+            getLoaderManager().restartLoader(Const.RELATED_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        }else {
+            getLoaderManager().initLoader(Const.RELATED_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        }
     }
 
     class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {

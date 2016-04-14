@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.animenavigator.R;
+import com.animenavigator.common.Const;
 import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 
@@ -46,7 +47,12 @@ public class SummaryFragment extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(MANGA_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        Loader loader = getLoaderManager().getLoader(Const.SUMMARY_CURSOR_LOADER_ID);
+        if (loader!=null && loader.isReset()){
+            getLoaderManager().restartLoader(Const.SUMMARY_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        }else {
+            getLoaderManager().initLoader(Const.SUMMARY_CURSOR_LOADER_ID, null, new CursorLoaderCallback(getActivity()));
+        }
     }
 
     class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
