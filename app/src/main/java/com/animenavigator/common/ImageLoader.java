@@ -1,8 +1,10 @@
 package com.animenavigator.common;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -28,25 +30,31 @@ public class ImageLoader {
     private static final int READ_TIMEOUT = 60;
     private static final int CONNECT_TIMEOUT = 60;
 
+    private static Picasso.Builder sPicassoBuilder;
+
 
     private static Picasso initPicasso(Context context){
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);
-        okHttpClient.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS);
-        okHttpClient.networkInterceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Response originalResponse = chain.proceed(chain.request());
-                return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (60 * 60 * 24 * 365)).build();
-            }
-        });
+        if (sPicassoBuilder==null) {
+            OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);
+            okHttpClient.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS);
+            okHttpClient.networkInterceptors().add(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (60 * 60 * 24 * 365)).build();
+                }
+            });
 
-        okHttpClient.setCache(new Cache(context.getCacheDir(), Integer.MAX_VALUE));
-        return new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient)).loggingEnabled(true).build();
+            okHttpClient.setCache(new Cache(context.getCacheDir(), Integer.MAX_VALUE));
+            sPicassoBuilder = new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient)).loggingEnabled(true).indicatorsEnabled(true);
+        }
+        return sPicassoBuilder.build();
     }
 
-    private static String processUrl(String url){
-        return (CloudFlare.BYPASS_CLOUDFLARE)? CloudFlare.bypass(url):url;
+    private static String processUrl(String url, Context context){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return (sp.getBoolean(Const.SP_ENABLE_CLOUDFLARE_KEY,false))? CloudFlare.bypass(url):url;
     }
 
     public static void loadImageToView(final String url, final Context context, final ImageView imageView){
@@ -58,7 +66,7 @@ public class ImageLoader {
 
             @Override
             public void onError() {
-                initPicasso(context).load(processUrl(url)).into(imageView);
+                initPicasso(context).load(processUrl(url, context)).into(imageView);
             }
         });
     }
@@ -72,7 +80,7 @@ public class ImageLoader {
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                initPicasso(context).load(processUrl(url)).into(target);
+                initPicasso(context).load(processUrl(url, context)).into(target);
             }
 
             @Override

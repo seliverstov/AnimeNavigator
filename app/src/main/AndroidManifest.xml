@@ -24,6 +24,9 @@
         <activity android:name=".details.DetailsActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".main.MainActivity"/>
         </activity>
+        <activity android:name=".settings.SettingsActivity" android:theme="@style/SettingsTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".main.MainActivity"/>
+        </activity>
 
         <provider
             android:authorities="com.animenavigator.provider"

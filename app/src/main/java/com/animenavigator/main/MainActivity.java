@@ -25,6 +25,7 @@ import com.animenavigator.details.DetailsActivity;
 import com.animenavigator.details.DetailsFragment;
 import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
+import com.animenavigator.settings.SettingsActivity;
 import com.animenavigator.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements ItemSelectedCallback {
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem item) {
+                    mDrawerLayout.closeDrawers();
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                     item.setChecked(true);
                     switch (item.getItemId()) {
@@ -70,10 +72,13 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
                         case R.id.favorite:
                             sp.edit().putString(Const.SP_ANIME_TYPE_KEY, null).putBoolean(Const.SP_FAVORITE_KEY, true).apply();
                             break;
+                        case R.id.settings:
+                            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                            startActivity(intent);
+                            break;
                         default:
                             Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                     }
-                    mDrawerLayout.closeDrawers();
                     return true;
                 }
             });
@@ -151,4 +156,5 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
             }
         }
     }
+
 }

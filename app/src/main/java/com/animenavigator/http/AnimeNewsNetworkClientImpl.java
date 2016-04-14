@@ -20,9 +20,9 @@ public class AnimeNewsNetworkClientImpl implements AnimeNewsNetworkClient {
     private String baseUrl;
 
 
-    public AnimeNewsNetworkClientImpl(){
+    public AnimeNewsNetworkClientImpl(boolean bypassCloudFlare){
         client = new OkHttpClient();
-        if (CloudFlare.BYPASS_CLOUDFLARE){
+        if (bypassCloudFlare){
             baseUrl = CloudFlare.bypass(AnimeNewsNetworkClient.BASE_URL);
         }else{
             baseUrl = AnimeNewsNetworkClient.BASE_URL;

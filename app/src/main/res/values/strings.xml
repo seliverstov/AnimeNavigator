@@ -51,4 +51,9 @@
     <string name="start_description">Image of five-pointed star</string>
     <string name="clear_btn_description">Clear search query</string>
     <string name="search_btn_description">Start search</string>
+    <string name="pref_enable_notification_key">ENABLE_NOTIFICATIONS</string>
+    <string name="pref_enable_notification_title">Notifications</string>
+    <string name="pref_enable_cloudflare_bypass_key">ENABLE_CLOUDFLARE</string>
+    <string name="pref_enable_cloudflare_bypass_title">Bypass CloudFlare</string>
+    <string name="settings">Settings</string>
 </resources>

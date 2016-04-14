@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreferenceCompat
+        android:key="@string/pref_enable_notification_key"
+        android:title="@string/pref_enable_notification_title"
+        android:defaultValue="true"/>
+    <SwitchPreferenceCompat
+        android:key="@string/pref_enable_cloudflare_bypass_key"
+        android:title="@string/pref_enable_cloudflare_bypass_title"
+        android:editable="false"
+        android:defaultValue="false"/>
+</PreferenceScreen>
