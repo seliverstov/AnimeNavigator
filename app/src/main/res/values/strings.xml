@@ -64,4 +64,10 @@
     <string name="related_tab_screen_name">Related Tab</string>
     <string name="extra_tab_screen_name">Extra Tab</string>
     <string name="settings_activity_screen_name">Settings Activity</string>
+    <string name="select_item_category">Select Item</string>
+    <string name="show_details_action">Show Details</string>
+    <string name="browse_category">Browse</string>
+    <string name="share_action">Share</string>
+    <string name="add_to_favorite_action">Add to Favorite</string>
+    <string name="remove_from_favorite_action">Remove from favorite</string>
 </resources>

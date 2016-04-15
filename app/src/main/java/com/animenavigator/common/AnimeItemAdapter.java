@@ -5,9 +5,12 @@ import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.animenavigator.Application;
 import com.animenavigator.R;
 import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.DecimalFormat;
 
@@ -18,10 +21,12 @@ import skyfish.CursorRecyclerViewAdapter;
  */
 public class AnimeItemAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder> {
     private Context mContext;
+    private Tracker mTracker;
 
     public AnimeItemAdapter(Context context, Cursor cursor){
         super(context, cursor);
         this.mContext = context;
+        this.mTracker = ((Application)mContext.getApplicationContext()).getDefaultTracker();
     }
 
     @Override
@@ -100,10 +105,20 @@ public class AnimeItemAdapter extends CursorRecyclerViewAdapter<AnimeViewHolder>
             ImageLoader.loadImageToView(anime.posterUrl, mContext, holder.mPoster);
 
         if (holder.view!=null) {
+
+
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mContext instanceof ItemSelectedCallback) {
+                        if (mTracker!=null) {
+                            mTracker.send(new HitBuilders.EventBuilder()
+                                    .setCategory(mContext.getString(R.string.browse_category))
+                                    .setAction(mContext.getString(R.string.show_details_action))
+                                    .setValue(anime._id)
+                                    .setLabel(anime.title)
+                                    .build());
+                        }
                         ((ItemSelectedCallback) mContext).onItemSelected(anime._id, holder.mPoster);
                     }
                 }

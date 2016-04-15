@@ -65,6 +65,7 @@ public class DetailsFragment extends Fragment {
     private View mView;
     private Uri mMangaUri;
     private String mTitle;
+    private Tracker mTracker;
 
     @Nullable
     @Override
@@ -113,6 +114,7 @@ public class DetailsFragment extends Fragment {
         if (getActivity() instanceof DetailsActivity){
             setHasOptionsMenu(true);
         }
+        mTracker = ((Application)getActivity().getApplication()).getDefaultTracker();
     }
 
     @Override
@@ -234,10 +236,26 @@ public class DetailsFragment extends Fragment {
                                 fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_off));
                                 favoriteList.remove(String.valueOf(anime._id));
                                 sp.edit().putString(Const.SP_FAVORITE_LIST_KEY,getFavoriteString(favoriteList)).apply();
+                                if (mTracker!=null) {
+                                    mTracker.send(new HitBuilders.EventBuilder()
+                                            .setCategory(getContext().getString(R.string.browse_category))
+                                            .setAction(getContext().getString(R.string.remove_from_favorite_action))
+                                            .setValue(ContentUris.parseId(mMangaUri))
+                                            .setLabel(mTitle)
+                                            .build());
+                                }
                             }else{
                                 fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_on));
                                 favoriteList.add(String.valueOf(anime._id));
                                 sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
+                                if (mTracker!=null) {
+                                    mTracker.send(new HitBuilders.EventBuilder()
+                                            .setCategory(getContext().getString(R.string.browse_category))
+                                            .setAction(getContext().getString(R.string.add_to_favorite_action))
+                                            .setValue(ContentUris.parseId(mMangaUri))
+                                            .setLabel(mTitle)
+                                            .build());
+                                }
                             }
                             getContext().getContentResolver().notifyChange(Contract.MangaEntry.buildFavorite(), null);
                             Intent widgetUpdateIntent = new Intent();
@@ -393,6 +411,14 @@ public class DetailsFragment extends Fragment {
             }
         }else{
             shareScreenShot();
+        }
+        if (mTracker!=null) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(getContext().getString(R.string.browse_category))
+                    .setAction(getContext().getString(R.string.share_action))
+                    .setValue(ContentUris.parseId(mMangaUri))
+                    .setLabel(mTitle)
+                    .build());
         }
     }
 
