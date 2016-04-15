@@ -4,12 +4,25 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:fitsSystemWindows="true">
-    <fragment
-        android:id="@+id/main_fragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.animenavigator.main.MainFragment"
-        />
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.animenavigator.main.MainFragment"
+            />
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id"/>
+    </RelativeLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"

@@ -27,6 +27,8 @@ import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
 import com.animenavigator.settings.SettingsActivity;
 import com.animenavigator.sync.SyncAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements ItemSelectedCallback {
     private static final String DETAILS_FRAGMENT_TAG = "DETAILS_FRAGMENT_TAG";
@@ -98,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
             }
         }else{
             mTwoPane = false;
+        }
+
+        AdView adView = (AdView)findViewById(R.id.adView);
+        if (adView != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
         }
 
         SyncAdapter.initializeSyncAdapter(this);
