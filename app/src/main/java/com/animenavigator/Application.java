@@ -13,6 +13,7 @@ public class Application extends android.app.Application {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             mTracker = analytics.newTracker(R.xml.global_tracker);
+            mTracker.enableExceptionReporting(true);
         }
         return mTracker;
     }
