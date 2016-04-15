@@ -24,4 +24,12 @@ public class Const {
     public static final int RELATED_CURSOR_LOADER_ID = 6;
     public static final int EXTRA_CURSOR_LOADER_ID = 7;
 
+    public static final int TOP_RATED_TAB = 0;
+    public static final int SEARCH_TAB = 1;
+    public static final int NEW_TAB = 2;
+
+    public static final int SUMMARY_TAB = 0;
+    public static final int RELATED_TAB = 1;
+    public static final int EXTRA_TAB = 2;
+
 }

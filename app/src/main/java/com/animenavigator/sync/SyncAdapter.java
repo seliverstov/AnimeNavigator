@@ -185,7 +185,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     .setAutoCancel(true);
 
             Intent intent = new Intent(mContext, MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_START_TAB, MainPagerAdapter.NEW_TAB);
+            intent.putExtra(MainActivity.EXTRA_START_TAB, Const.NEW_TAB);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

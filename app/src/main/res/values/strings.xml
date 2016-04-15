@@ -55,4 +55,13 @@
     <string name="pref_enable_notification_title">Notifications</string>
     <string name="settings">Settings</string>
     <string name="empty_list">Empty list</string>
+    <string name="main_activity_screen_name">Main Activity</string>
+    <string name="top_rated_tab_screen_name">Top Rated Tab</string>
+    <string name="search_tab_screen_name">Search Tab</string>
+    <string name="new_tab_screen_name">New Tab</string>
+    <string name="details_activity_screen_name">Details Activity</string>
+    <string name="summary_tab_screen_name">Summary Tab</string>
+    <string name="related_tab_screen_name">Related Tab</string>
+    <string name="extra_tab_screen_name">Extra Tab</string>
+    <string name="settings_activity_screen_name">Settings Activity</string>
 </resources>

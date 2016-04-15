@@ -11,9 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.animenavigator.Application;
 import com.animenavigator.R;
 import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.db.Contract;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 /**
  * Created by a.g.seliverstov on 23.03.2016.
@@ -35,6 +38,14 @@ public class DetailsActivity extends AppCompatActivity implements ItemSelectedCa
         }
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Tracker tracker = ((Application)getApplication()).getDefaultTracker();
+        tracker.setScreenName(getString(R.string.details_activity_screen_name));
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

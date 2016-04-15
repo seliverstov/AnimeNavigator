@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.animenavigator.Application;
 import com.animenavigator.common.Const;
 import com.animenavigator.db.Contract;
 import com.animenavigator.details.DetailsActivity;
@@ -27,6 +28,8 @@ import com.animenavigator.common.ItemSelectedCallback;
 import com.animenavigator.R;
 import com.animenavigator.settings.SettingsActivity;
 import com.animenavigator.sync.SyncAdapter;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class MainActivity extends AppCompatActivity implements ItemSelectedCallback {
     private static final String DETAILS_FRAGMENT_TAG = "DETAILS_FRAGMENT_TAG";
@@ -102,7 +105,17 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
 
         SyncAdapter.initializeSyncAdapter(this);
 
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Tracker tracker = ((Application)getApplication()).getDefaultTracker();
+        tracker.setScreenName(getString(R.string.main_activity_screen_name));
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -147,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
     public void onItemSelected(int id) {
         onItemSelected(id, null);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

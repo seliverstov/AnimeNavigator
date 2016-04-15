@@ -9,7 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.animenavigator.Application;
 import com.animenavigator.R;
+import com.animenavigator.common.Const;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 /**
  * Created by a.g.seliverstov on 29.03.2016.
@@ -28,6 +32,35 @@ public class MainFragment extends Fragment{
         if (mViewPager !=null) {
             mViewPager.setAdapter(adapter);
         }
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Tracker tracker = ((Application)getActivity().getApplication()).getDefaultTracker();
+                switch(position){
+                    case Const.TOP_RATED_TAB:
+                        tracker.setScreenName(getString(R.string.top_rated_tab_screen_name));
+                        break;
+                    case Const.SEARCH_TAB:
+                        tracker.setScreenName(getString(R.string.search_tab_screen_name));
+                        break;
+                    case Const.NEW_TAB:
+                        tracker.setScreenName(getString(R.string.new_tab_screen_name));
+                        break;
+                }
+                tracker.send(new HitBuilders.ScreenViewBuilder().build());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         TabLayout tabLayout = (TabLayout)view.findViewById(R.id.main_tablayout);
         if (tabLayout !=null)

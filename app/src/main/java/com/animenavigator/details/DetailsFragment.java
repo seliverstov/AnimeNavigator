@@ -37,12 +37,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.animenavigator.Application;
 import com.animenavigator.common.Const;
 import com.animenavigator.common.ImageLoader;
 import com.animenavigator.R;
 import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 import com.animenavigator.common.ScreenShotUtils;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -250,7 +253,37 @@ public class DetailsFragment extends Fragment {
                 ViewPager viewPager = (ViewPager) mView.findViewById(R.id.details_viewpager);
                 if (viewPager != null) {
                     viewPager.setAdapter(adapter);
+                    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                        }
+
+                        @Override
+                        public void onPageSelected(int position) {
+                            Tracker tracker = ((Application) getActivity().getApplication()).getDefaultTracker();
+                            switch (position) {
+                                case Const.SUMMARY_TAB:
+                                    tracker.setScreenName(getString(R.string.summary_tab_screen_name));
+                                    break;
+                                case Const.RELATED_TAB:
+                                    tracker.setScreenName(getString(R.string.related_tab_screen_name));
+                                    break;
+                                case Const.EXTRA_TAB:
+                                    tracker.setScreenName(getString(R.string.extra_tab_screen_name));
+                                    break;
+                            }
+                            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+
+                        }
+                    });
                 }
+
+
 
                 final TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.details_tablayout);
                 if (tabLayout != null)
