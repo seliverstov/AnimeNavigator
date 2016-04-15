@@ -14,7 +14,9 @@ import android.view.View;
 import com.animenavigator.Application;
 import com.animenavigator.R;
 import com.animenavigator.common.ItemSelectedCallback;
+import com.animenavigator.common.ScreenTracker;
 import com.animenavigator.db.Contract;
+import com.animenavigator.main.MainFragment;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -22,7 +24,6 @@ import com.google.android.gms.analytics.Tracker;
  * Created by a.g.seliverstov on 23.03.2016.
  */
 public class DetailsActivity extends AppCompatActivity implements ItemSelectedCallback {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +37,8 @@ public class DetailsActivity extends AppCompatActivity implements ItemSelectedCa
             detailsFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction().replace(R.id.details_container, detailsFragment).commit();
         }
-
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Tracker tracker = ((Application)getApplication()).getDefaultTracker();
-        tracker.setScreenName(getString(R.string.details_activity_screen_name));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

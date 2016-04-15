@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.animenavigator.Application;
 import com.animenavigator.common.Const;
+import com.animenavigator.common.ScreenTracker;
 import com.animenavigator.db.Contract;
 import com.animenavigator.details.DetailsActivity;
 import com.animenavigator.details.DetailsFragment;
@@ -104,16 +106,6 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedCallb
         }
 
         SyncAdapter.initializeSyncAdapter(this);
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Tracker tracker = ((Application)getApplication()).getDefaultTracker();
-        tracker.setScreenName(getString(R.string.main_activity_screen_name));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 

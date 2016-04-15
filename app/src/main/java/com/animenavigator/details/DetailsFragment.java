@@ -26,6 +26,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +42,7 @@ import com.animenavigator.Application;
 import com.animenavigator.common.Const;
 import com.animenavigator.common.ImageLoader;
 import com.animenavigator.R;
+import com.animenavigator.common.ScreenTracker;
 import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 import com.animenavigator.common.ScreenShotUtils;
@@ -66,6 +68,8 @@ public class DetailsFragment extends Fragment {
     private Uri mMangaUri;
     private String mTitle;
     private Tracker mTracker;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     @Nullable
     @Override
@@ -105,6 +109,35 @@ public class DetailsFragment extends Fragment {
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
+
+        Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
+        DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(), getActivity(), uri);
+
+        mViewPager = (ViewPager) mView.findViewById(R.id.details_viewpager);
+        if (mViewPager != null) {
+            mViewPager.setAdapter(adapter);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    ScreenTracker.trackDetailsScreen(getActivity(), position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+
+        mTabLayout = (TabLayout) mView.findViewById(R.id.details_tablayout);
+        if (mTabLayout != null)
+            mTabLayout.setupWithViewPager(mViewPager);
+
         return mView;
     }
 
@@ -232,11 +265,11 @@ public class DetailsFragment extends Fragment {
                         public void onClick(View v) {
                             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                             List<String> favoriteList = new ArrayList<>(Arrays.asList(sp.getString(Const.SP_FAVORITE_LIST_KEY, "").split(",")));
-                            if (favoriteList.contains(String.valueOf(anime._id))){
+                            if (favoriteList.contains(String.valueOf(anime._id))) {
                                 fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_off));
                                 favoriteList.remove(String.valueOf(anime._id));
-                                sp.edit().putString(Const.SP_FAVORITE_LIST_KEY,getFavoriteString(favoriteList)).apply();
-                                if (mTracker!=null) {
+                                sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
+                                if (mTracker != null) {
                                     mTracker.send(new HitBuilders.EventBuilder()
                                             .setCategory(getContext().getString(R.string.browse_category))
                                             .setAction(getContext().getString(R.string.remove_from_favorite_action))
@@ -244,11 +277,11 @@ public class DetailsFragment extends Fragment {
                                             .setLabel(mTitle)
                                             .build());
                                 }
-                            }else{
+                            } else {
                                 fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_on));
                                 favoriteList.add(String.valueOf(anime._id));
                                 sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
-                                if (mTracker!=null) {
+                                if (mTracker != null) {
                                     mTracker.send(new HitBuilders.EventBuilder()
                                             .setCategory(getContext().getString(R.string.browse_category))
                                             .setAction(getContext().getString(R.string.add_to_favorite_action))
@@ -264,48 +297,6 @@ public class DetailsFragment extends Fragment {
                         }
                     });
                 }
-
-                Uri uri = getArguments().getParcelable(MANGA_URI_KEY);
-                DetailsPagerAdapter adapter = new DetailsPagerAdapter(getActivity().getSupportFragmentManager(), getActivity(), uri);
-
-                ViewPager viewPager = (ViewPager) mView.findViewById(R.id.details_viewpager);
-                if (viewPager != null) {
-                    viewPager.setAdapter(adapter);
-                    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                        }
-
-                        @Override
-                        public void onPageSelected(int position) {
-                            Tracker tracker = ((Application) getActivity().getApplication()).getDefaultTracker();
-                            switch (position) {
-                                case Const.SUMMARY_TAB:
-                                    tracker.setScreenName(getString(R.string.summary_tab_screen_name));
-                                    break;
-                                case Const.RELATED_TAB:
-                                    tracker.setScreenName(getString(R.string.related_tab_screen_name));
-                                    break;
-                                case Const.EXTRA_TAB:
-                                    tracker.setScreenName(getString(R.string.extra_tab_screen_name));
-                                    break;
-                            }
-                            tracker.send(new HitBuilders.ScreenViewBuilder().build());
-                        }
-
-                        @Override
-                        public void onPageScrollStateChanged(int state) {
-
-                        }
-                    });
-                }
-
-
-
-                final TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.details_tablayout);
-                if (tabLayout != null)
-                    tabLayout.setupWithViewPager(viewPager);
 
                 final ImageView poster = (ImageView) mView.findViewById(R.id.poster);
 
@@ -342,10 +333,10 @@ public class DetailsFragment extends Fragment {
                                     if (vintage!=null){
                                         vintage.setTextColor(swatch.getTitleTextColor());
                                     }
-                                    if (tabLayout != null) {
-                                        tabLayout.setBackgroundColor(swatch.getRgb());
-                                        tabLayout.setTabTextColors(swatch.getTitleTextColor(),swatch.getBodyTextColor());
-                                        tabLayout.setSelectedTabIndicatorColor(swatch.getBodyTextColor());
+                                    if (mTabLayout != null) {
+                                        mTabLayout.setBackgroundColor(swatch.getRgb());
+                                        mTabLayout.setTabTextColors(swatch.getTitleTextColor(),swatch.getBodyTextColor());
+                                        mTabLayout.setSelectedTabIndicatorColor(swatch.getBodyTextColor());
                                     }
                                 }
                             }
@@ -430,5 +421,13 @@ public class DetailsFragment extends Fragment {
         }
         String result =  sb.toString();
         return (result.length()>0)?result.substring(0,result.length()-1):result;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mViewPager!=null) {
+            ScreenTracker.trackDetailsScreen(getActivity(), mViewPager.getCurrentItem());
+        }
     }
 }

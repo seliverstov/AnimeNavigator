@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import com.animenavigator.Application;
 import com.animenavigator.R;
 import com.animenavigator.common.Const;
+import com.animenavigator.common.ScreenTracker;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -41,19 +43,7 @@ public class MainFragment extends Fragment{
 
             @Override
             public void onPageSelected(int position) {
-                Tracker tracker = ((Application)getActivity().getApplication()).getDefaultTracker();
-                switch(position){
-                    case Const.TOP_RATED_TAB:
-                        tracker.setScreenName(getString(R.string.top_rated_tab_screen_name));
-                        break;
-                    case Const.SEARCH_TAB:
-                        tracker.setScreenName(getString(R.string.search_tab_screen_name));
-                        break;
-                    case Const.NEW_TAB:
-                        tracker.setScreenName(getString(R.string.new_tab_screen_name));
-                        break;
-                }
-                tracker.send(new HitBuilders.ScreenViewBuilder().build());
+                ScreenTracker.trackMainScreen(getActivity(),position);
             }
 
             @Override
@@ -74,5 +64,13 @@ public class MainFragment extends Fragment{
 
     public int getCurrentTab(){
         return mViewPager.getCurrentItem();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mViewPager!=null) {
+            ScreenTracker.trackMainScreen(getActivity(), mViewPager.getCurrentItem());
+        }
     }
 }
