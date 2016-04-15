@@ -1,7 +1,9 @@
 package com.animenavigator.http;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.animenavigator.common.AppTracker;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -15,20 +17,22 @@ import java.io.IOException;
 public class AnimeNewsNetworkClientImpl implements AnimeNewsNetworkClient {
     private static final String TAG = AnimeNewsNetworkClientImpl.class.getSimpleName();
 
-    private OkHttpClient client;
-    private String baseUrl;
+    private OkHttpClient mClient;
+    private String mBaseUrl;
+    private Context mContext;
 
 
-    public AnimeNewsNetworkClientImpl(){
-        client = new OkHttpClient();
-        baseUrl = AnimeNewsNetworkClient.BASE_URL;
+    public AnimeNewsNetworkClientImpl(Context context){
+        mClient = new OkHttpClient();
+        mBaseUrl = AnimeNewsNetworkClient.BASE_URL;
+        mContext = context;
     }
 
     @Override
     public String queryTitlesXML(Integer skip, Integer list, AnimeNewsNetworkClient.AnimeType type, String name) {
         if (skip < 0 || list < 0) return null;
         try{
-            HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + QUERY_TITLES).newBuilder();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(mBaseUrl + QUERY_TITLES).newBuilder();
             if (skip>0) {
                 urlBuilder.addQueryParameter(QUERY_TITLES_NSKIP_PARAMETER, skip.toString());
             }
@@ -46,15 +50,16 @@ public class AnimeNewsNetworkClientImpl implements AnimeNewsNetworkClient {
             String url = urlBuilder.build().toString();
             Log.i(TAG, "Query titles: " + url);
             Request request = new Request.Builder().url(url).build();
-            Response response = client.newCall(request).execute();
+            Response response = mClient.newCall(request).execute();
             if (response.isSuccessful()){
                 return response.body().string();
             }else{
-                Log.e(TAG,"Unexpected code " + response);
+                Log.e(TAG, "Unexpected code " + response);
                 return null;
             }
         }catch(IOException e){
             Log.e(TAG,e.getMessage(),e);
+            AppTracker.trackException(mContext, e.getMessage());
             return null;
         }
     }
@@ -63,10 +68,10 @@ public class AnimeNewsNetworkClientImpl implements AnimeNewsNetworkClient {
     public String queryDetailsXml(Integer id, AnimeType type) {
         if (id <= 0) return null;
         try{
-            HttpUrl url = HttpUrl.parse(baseUrl+QUERY_DETAILS).newBuilder().addQueryParameter((type==null?QUERY_DETAILS_TITLE_PARAMETER:type.toString()),id.toString()).build();
+            HttpUrl url = HttpUrl.parse(mBaseUrl +QUERY_DETAILS).newBuilder().addQueryParameter((type==null?QUERY_DETAILS_TITLE_PARAMETER:type.toString()),id.toString()).build();
             Log.i(TAG, "Query details: " + url.toString());
             Request request = new Request.Builder().url(url).build();
-            Response response = client.newCall(request).execute();
+            Response response = mClient.newCall(request).execute();
             if (response.isSuccessful()){
                 return response.body().string();
             }else{
@@ -75,6 +80,7 @@ public class AnimeNewsNetworkClientImpl implements AnimeNewsNetworkClient {
             }
         }catch(IOException e){
             Log.e(TAG, e.getMessage(), e);
+            AppTracker.trackException(mContext, e.getMessage());
             return null;
         }
     }

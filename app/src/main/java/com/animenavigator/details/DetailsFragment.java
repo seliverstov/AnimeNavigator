@@ -26,7 +26,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,16 +37,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.animenavigator.Application;
 import com.animenavigator.common.Const;
 import com.animenavigator.common.ImageLoader;
 import com.animenavigator.R;
-import com.animenavigator.common.ScreenTracker;
+import com.animenavigator.common.AppTracker;
 import com.animenavigator.db.Contract;
 import com.animenavigator.model.Anime;
 import com.animenavigator.common.ScreenShotUtils;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -67,7 +63,6 @@ public class DetailsFragment extends Fragment {
     private View mView;
     private Uri mMangaUri;
     private String mTitle;
-    private Tracker mTracker;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
@@ -124,7 +119,7 @@ public class DetailsFragment extends Fragment {
 
                 @Override
                 public void onPageSelected(int position) {
-                    ScreenTracker.trackDetailsScreen(getActivity(), position);
+                    AppTracker.trackDetailsScreen(getActivity(), position);
                 }
 
                 @Override
@@ -147,7 +142,6 @@ public class DetailsFragment extends Fragment {
         if (getActivity() instanceof DetailsActivity){
             setHasOptionsMenu(true);
         }
-        mTracker = ((Application)getActivity().getApplication()).getDefaultTracker();
     }
 
     @Override
@@ -269,26 +263,12 @@ public class DetailsFragment extends Fragment {
                                 fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_off));
                                 favoriteList.remove(String.valueOf(anime._id));
                                 sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
-                                if (mTracker != null) {
-                                    mTracker.send(new HitBuilders.EventBuilder()
-                                            .setCategory(getContext().getString(R.string.browse_category))
-                                            .setAction(getContext().getString(R.string.remove_from_favorite_action))
-                                            .setValue(ContentUris.parseId(mMangaUri))
-                                            .setLabel(mTitle)
-                                            .build());
-                                }
+                                AppTracker.trackAction(getContext(), getContext().getString(R.string.remove_from_favorite_action), ContentUris.parseId(mMangaUri), mTitle);
                             } else {
                                 fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_star_big_on));
                                 favoriteList.add(String.valueOf(anime._id));
                                 sp.edit().putString(Const.SP_FAVORITE_LIST_KEY, getFavoriteString(favoriteList)).apply();
-                                if (mTracker != null) {
-                                    mTracker.send(new HitBuilders.EventBuilder()
-                                            .setCategory(getContext().getString(R.string.browse_category))
-                                            .setAction(getContext().getString(R.string.add_to_favorite_action))
-                                            .setValue(ContentUris.parseId(mMangaUri))
-                                            .setLabel(mTitle)
-                                            .build());
-                                }
+                                AppTracker.trackAction(getContext(), getContext().getString(R.string.add_to_favorite_action), ContentUris.parseId(mMangaUri), mTitle);
                             }
                             getContext().getContentResolver().notifyChange(Contract.MangaEntry.buildFavorite(), null);
                             Intent widgetUpdateIntent = new Intent();
@@ -403,14 +383,7 @@ public class DetailsFragment extends Fragment {
         }else{
             shareScreenShot();
         }
-        if (mTracker!=null) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory(getContext().getString(R.string.browse_category))
-                    .setAction(getContext().getString(R.string.share_action))
-                    .setValue(ContentUris.parseId(mMangaUri))
-                    .setLabel(mTitle)
-                    .build());
-        }
+        AppTracker.trackAction(getContext(), getContext().getString(R.string.share_action), ContentUris.parseId(mMangaUri), mTitle);
     }
 
     protected String getFavoriteString(List<String> list){
@@ -427,7 +400,7 @@ public class DetailsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (mViewPager!=null) {
-            ScreenTracker.trackDetailsScreen(getActivity(), mViewPager.getCurrentItem());
+            AppTracker.trackDetailsScreen(getActivity(), mViewPager.getCurrentItem());
         }
     }
 }

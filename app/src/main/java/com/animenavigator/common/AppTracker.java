@@ -13,8 +13,8 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * Created by a.g.seliverstov on 15.04.2016.
  */
-public class ScreenTracker {
-    public static final String TAG = ScreenTracker.class.getSimpleName();
+public class AppTracker {
+    public static final String TAG = AppTracker.class.getSimpleName();
 
     public static void trackMainScreen(Context context, int position){
         if (context.getApplicationContext() instanceof Application) {
@@ -33,9 +33,8 @@ public class ScreenTracker {
             Tracker tracker = ((Application) context.getApplicationContext()).getDefaultTracker();
             tracker.setScreenName(screen);
             tracker.send(new HitBuilders.ScreenViewBuilder().build());
-            Log.e(TAG, "Track "+screen);
         }else{
-            Log.e(TAG,"Application has wrong class");
+            Log.e(TAG,"Application do not support tracking");
         }
     }
     public static void trackDetailsScreen(Context context, int position){
@@ -55,9 +54,33 @@ public class ScreenTracker {
             Tracker tracker = ((Application) context.getApplicationContext()).getDefaultTracker();
             tracker.setScreenName(screen);
             tracker.send(new HitBuilders.ScreenViewBuilder().build());
-            Log.e(TAG, "Track "+screen);
         }else{
-            Log.e(TAG,"Application has wrong class");
+            Log.e(TAG,"Application do not support tracking");
+        }
+    }
+
+    public static void trackException(Context context, String description){
+        if (context.getApplicationContext() instanceof Application) {
+            Tracker tracker = ((Application) context.getApplicationContext()).getDefaultTracker();
+            tracker.send(new HitBuilders.ExceptionBuilder()
+                    .setDescription(description)
+                    .build());
+        }else{
+            Log.e(TAG, "Application do not support tracking");
+        }
+    }
+
+    public static void trackAction(Context context, String action, long value, String label){
+        if (context.getApplicationContext() instanceof Application) {
+            Tracker tracker = ((Application) context.getApplicationContext()).getDefaultTracker();
+            tracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(context.getString(R.string.browse_category))
+                    .setAction(action)
+                    .setValue(value)
+                    .setLabel(label)
+                    .build());
+        }else{
+            Log.e(TAG, "Application do not support tracking");
         }
     }
 }

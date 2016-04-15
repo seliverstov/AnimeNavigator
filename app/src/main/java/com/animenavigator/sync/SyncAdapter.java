@@ -23,13 +23,13 @@ import android.util.Log;
 
 import com.animenavigator.R;
 import com.animenavigator.common.Const;
+import com.animenavigator.common.AppTracker;
 import com.animenavigator.db.Contract;
 import com.animenavigator.db.DbHelper;
 import com.animenavigator.db.MangaDao;
 import com.animenavigator.http.AnimeNewsNetworkClient;
 import com.animenavigator.http.AnimeNewsNetworkClientImpl;
 import com.animenavigator.main.MainActivity;
-import com.animenavigator.main.MainPagerAdapter;
 import com.animenavigator.xml.ANN;
 import com.animenavigator.xml.Titles;
 
@@ -74,7 +74,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             titlesCount = 200;
         }
 
-        AnimeNewsNetworkClient client = new AnimeNewsNetworkClientImpl();
+        AnimeNewsNetworkClient client = new AnimeNewsNetworkClientImpl(getContext());
         String titlesXml = client.queryTitlesXML(0,titlesCount, null, null);
         if (titlesXml==null){
             Log.e(TAG,"Sync error: titles aml is null");
@@ -114,6 +114,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         n++;
                     } catch (Exception e) {
                         Log.e(TAG,t.id + "," + t.type + " - error: "+e.getMessage(),e);
+                        AppTracker.trackException(mContext, t.id + "," + t.type + " - error: " + e.getMessage());
                     }
                 }
             }
@@ -128,6 +129,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             sp.edit().putLong(Const.SP_LAST_SINC,System.currentTimeMillis()).apply();
         } catch (Exception e) {
             Log.e(TAG,e.getMessage(),e);
+            AppTracker.trackException(mContext, e.getMessage());
             dbHelper.close();
             return;
         }

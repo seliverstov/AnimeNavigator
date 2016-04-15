@@ -5,17 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.animenavigator.Application;
 import com.animenavigator.R;
-import com.animenavigator.common.Const;
-import com.animenavigator.common.ScreenTracker;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+import com.animenavigator.common.AppTracker;
 
 /**
  * Created by a.g.seliverstov on 29.03.2016.
@@ -43,7 +38,7 @@ public class MainFragment extends Fragment{
 
             @Override
             public void onPageSelected(int position) {
-                ScreenTracker.trackMainScreen(getActivity(),position);
+                AppTracker.trackMainScreen(getActivity(), position);
             }
 
             @Override
@@ -70,7 +65,7 @@ public class MainFragment extends Fragment{
     public void onResume() {
         super.onResume();
         if (mViewPager!=null) {
-            ScreenTracker.trackMainScreen(getActivity(), mViewPager.getCurrentItem());
+            AppTracker.trackMainScreen(getActivity(), mViewPager.getCurrentItem());
         }
     }
 }
