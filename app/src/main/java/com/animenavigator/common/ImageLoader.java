@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.animenavigator.R;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -44,13 +45,13 @@ public class ImageLoader {
             });
 
             okHttpClient.setCache(new Cache(context.getCacheDir(), Integer.MAX_VALUE));
-            sPicassoBuilder = new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient)).loggingEnabled(true).indicatorsEnabled(true);
+            sPicassoBuilder = new Picasso.Builder(context).downloader(new OkHttpDownloader(okHttpClient));
         }
         return sPicassoBuilder.build();
     }
 
     public static void loadImageToView(final String url, final Context context, final ImageView imageView){
-        initPicasso(context).load(url).into(imageView, new Callback() {
+        initPicasso(context).load(url).placeholder(R.drawable.placeholder).error(R.drawable.no_poster).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
 
@@ -64,7 +65,7 @@ public class ImageLoader {
     }
 
     public static void loadImageToView(final String url, final Context context, final Target target){
-        initPicasso(context).load(url).into(new Target() {
+        initPicasso(context).load(url).placeholder(R.drawable.placeholder).error(R.drawable.no_poster).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 target.onBitmapLoaded(bitmap,from);

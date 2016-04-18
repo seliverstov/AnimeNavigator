@@ -12,6 +12,7 @@
             android:id="@+id/item_poster"
             android:layout_width="@dimen/poster_small_width"
             android:layout_height="@dimen/poster_small_height"
+            android:src="@drawable/placeholder"
             android:contentDescription="@string/poster_description"
             android:scaleType="centerCrop"
             />
