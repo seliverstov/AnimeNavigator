@@ -188,6 +188,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             Intent intent = new Intent(mContext, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_START_TAB, Const.NEW_TAB);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
